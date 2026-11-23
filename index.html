@@ -270,7 +270,7 @@
             <button type="button" data-filter="Bearish" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-rose-300 hover:bg-slate-700">Bearish</button>
             <button type="button" data-filter="Bilateral" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-amber-300 hover:bg-slate-700">Bilateral</button>
           </div>
-          <span class="text-xs text-slate-400">Click any pattern card to inspect full-size &amp; animate</span>
+          <span class="text-xs text-slate-400">For educational study only &bull; Click any pattern card to inspect</span>
         </div>
 
         <div id="guide-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -411,7 +411,7 @@
         biasFull: 'Bearish Reversal',
         trigger: 'Price breaks below the middle valley support',
         desc: 'An M-shaped formation where price tests a resistance ceiling twice and fails both times.',
-        rule: 'Do not short just on the second peak—wait for price to break below the support valley between the two tops.',
+        rule: 'Do not assume a reversal just on the second peak—watch to see if price breaks below the support valley between the two tops.',
         points: [28, 52, 78, 54, 48, 76, 56, 47],
         breakout: [38, 30, 24, 18, 13],
         lines: [
@@ -587,7 +587,7 @@
         biasFull: 'Bullish Continuation',
         trigger: 'Price closes above the horizontal resistance box',
         desc: 'After an uptrend, price pauses sideways between two parallel horizontal support and resistance levels.',
-        rule: 'Sideways ranges can fool impatient traders—wait for a breakout close above the top of the box.',
+        rule: 'Sideways ranges can fool impatient chart readers—wait for a confirmed breakout close above the top of the box.',
         points: [20, 44, 70, 52, 71, 53, 70, 52, 71],
         breakout: [79, 85, 90, 94, 97],
         lines: [
@@ -677,7 +677,7 @@
         biasFull: 'Bilateral Consolidation',
         trigger: 'Price breaks decisively beyond either diverging trendline',
         desc: 'Successive higher highs and lower lows form an expanding megaphone shape, signaling high volatility and market indecision.',
-        rule: 'Swings inside a megaphone trap stop-losses easily—wait for a clean breakout outside the diverging lines.',
+        rule: 'Wide swings inside a megaphone create false signals easily—observe price behavior until a clean breakout occurs outside the diverging lines.',
         points: [52, 60, 44, 68, 36, 76, 28, 82],
         breakout: [86, 90, 93, 95, 97],
         lines: [
@@ -899,7 +899,7 @@
         const distractors = shuffle(PATTERNS.filter(p => p.id !== pattern.id)).slice(0, 3).map(p => p.trigger);
         return {
           badge: 'Confirmation Point',
-          prompt: 'What confirms this pattern is ready for a real breakout?',
+          prompt: 'In technical analysis, what confirms this pattern is complete?',
           options: shuffle([pattern.trigger, ...distractors]),
           correct: pattern.trigger
         };
@@ -934,7 +934,7 @@
       game.answered = false;
 
       const ticker = TICKERS[Math.floor(Math.random() * TICKERS.length)];
-      const tf = ['15M', '1H', '4H', '1D'][Math.floor(Math.random() * 4)];
+      const tf = ['1D', '1W', '1M'][Math.floor(Math.random() * 3)];
       document.getElementById('chart-ticker').textContent = `${ticker} • ${tf}`;
       document.getElementById('chart-qtype').textContent = game.currentQuestion.badge;
       document.getElementById('question-text').textContent = game.currentQuestion.prompt;
@@ -1064,7 +1064,7 @@
       if (game.lives > 0 && acc >= 70) {
         document.getElementById('end-subtitle').textContent = 'Arcade Victory!';
         document.getElementById('end-title').textContent = 'Master Pattern Hunter';
-        document.getElementById('end-msg').textContent = 'You spotted breakouts and avoided early-entry traps like a seasoned trader!';
+        document.getElementById('end-msg').textContent = 'You spotted chart formations and confirmation levels like a seasoned market student!';
         if (window.confetti) confetti({ particleCount: 95, spread: 75, origin: { y: 0.6 } });
       } else {
         document.getElementById('end-subtitle').textContent = game.lives === 0 ? 'Out of Hearts!' : 'Run Complete!';
@@ -1266,7 +1266,8 @@
   </script>
 
   <footer class="max-w-5xl mx-auto px-4 pb-6 pt-2 text-center text-xs text-slate-500">
-    <p>&copy; 2026 <strong class="text-slate-300">So-Called Investor (SCI)</strong>. All rights reserved. &bull; ChartBlaster by SCI</p>
+    <p>&copy; 2027 <strong class="text-slate-300">So-Called Investor (SCI)</strong>. All rights reserved. &bull; ChartBlaster by SCI</p>
+    <p class="mt-1 text-[11px] text-slate-400">Educational &amp; knowledge purpose only. Simulated charts are not financial advice.</p>
   </footer>
 </body>
 </html>
