@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChartBlaster: Pattern Hunter Arcade</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top right, #1e293b 0%, #0b1120 55%, #020617 100%);
+      min-height: 100vh;
+      color: #f8fafc;
+    }
+    .arcade-card {
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(51, 65, 85, 0.85);
+      box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.6);
+    }
+    .choice-tile {
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .choice-tile:hover:not(:disabled) {
+      transform: translateY(-2px);
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.14);
+      box-shadow: 0 10px 25px -8px rgba(16, 185, 129, 0.35);
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.95) translateY(8px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-pop {
+      animation: popIn 0.25s ease-out forwards;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+      50% { box-shadow: 0 0 18px 2px rgba(245, 158, 11, 0.45); }
+    }
+    .combo-glow {
+      animation: pulseGlow 1.5s infinite;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- Top Arcade Header -->
+  <header class="sticky top-0 z-30 bg-slate-950/85 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-slate-950 shadow-lg shadow-emerald-500/20">
+          <i data-lucide="candlestick-chart" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="font-black text-base sm:text-lg tracking-tight text-white leading-tight">ChartBlaster</h1>
+          <p class="text-[11px] text-emerald-400 font-semibold hidden sm:block">Pattern Hunter Arcade</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="btn-guide" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition">
+          <i data-lucide="book-open" class="w-4 h-4"></i>
+          <span>Field Guide (20)</span>
+        </button>
+        <button id="btn-sound" type="button" class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition" title="Toggle Sound">
+          <i id="icon-sound" data-lucide="volume-2" class="w-4 h-4"></i>
+        </button>
+        <button id="btn-home" type="button" class="hidden inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+          <i data-lucide="home" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Menu</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-6">
+
+    <!-- SCREEN 1: START MENU -->
+    <section id="screen-start" class="animate-pop space-y-6">
+      <div class="arcade-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-extrabold uppercase tracking-wider mb-4">
+          <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+          20 Real Chart Patterns • Procedural Candlesticks
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
+          Spot the Pattern. <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Call the Breakout!</span>
+        </h2>
+        <p class="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base mb-6">
+          Every round draws a fresh, animated candlestick chart from 20 classic market formations with rotating question styles—name the pattern, predict bullish vs. bearish breakouts, or spot the confirmation trigger!
+        </p>
+
+        <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-slate-900/90 border border-slate-700 mb-7 text-xs sm:text-sm">
+          <span class="text-slate-400">Best Arcade Score:</span>
+          <strong id="menu-highscore" class="text-amber-400 font-black text-base">0</strong>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          <button id="btn-start-arcade" type="button" class="group p-5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 text-left shadow-lg shadow-emerald-500/20 transition transform hover:-translate-y-0.5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-slate-950/20 text-slate-950 text-xs font-black uppercase">10 Rounds • 3 Hearts</span>
+              <i data-lucide="flame" class="w-6 h-6"></i>
+            </div>
+            <div class="text-xl font-black mb-1">Arcade Rush</div>
+            <p class="text-xs font-semibold text-slate-900/85">Build combos up to 5×, beat your high score, and watch live breakout animations.</p>
+          </button>
+
+          <button id="btn-start-zen" type="button" class="group p-5 rounded-2xl bg-slate-800/90 hover:bg-slate-800 border-2 border-slate-700 hover:border-cyan-400 text-white text-left transition transform hover:-translate-y-0.5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-black uppercase">Unlimited • No Lives</span>
+              <i data-lucide="compass" class="w-6 h-6 text-cyan-400"></i>
+            </div>
+            <div class="text-xl font-black mb-1">Zen Practice</div>
+            <p class="text-xs text-slate-300">Relaxed endless training with free trendline overlays and pattern breakdowns.</p>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: GAMEPLAY ARENA -->
+    <section id="screen-game" class="hidden space-y-4">
+
+      <!-- Arcade HUD -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="arcade-card rounded-2xl p-3.5 flex items-center justify-between">
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase">Round</div>
+            <div class="text-xl font-black text-white" id="hud-round">1 / 10</div>
+          </div>
+          <i data-lucide="layers" class="w-5 h-5 text-cyan-400"></i>
+        </div>
+
+        <div class="arcade-card rounded-2xl p-3.5 flex items-center justify-between">
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase">Score</div>
+            <div class="text-xl font-black text-emerald-400" id="hud-score">0</div>
+          </div>
+          <i data-lucide="trophy" class="w-5 h-5 text-emerald-400"></i>
+        </div>
+
+        <div id="hud-combo-card" class="arcade-card rounded-2xl p-3.5 flex items-center justify-between">
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase">Combo</div>
+            <div class="text-xl font-black text-amber-400" id="hud-combo">1×</div>
+          </div>
+          <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+        </div>
+
+        <div class="arcade-card rounded-2xl p-3.5 flex items-center justify-between">
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase" id="hud-lives-label">Lives</div>
+            <div class="text-lg font-black text-rose-400 tracking-wider" id="hud-lives">❤️❤️❤️</div>
+          </div>
+          <i data-lucide="heart" class="w-5 h-5 text-rose-400"></i>
+        </div>
+      </div>
+
+      <!-- Live Candlestick Chart Stage -->
+      <div class="arcade-card rounded-3xl p-4 sm:p-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2.5">
+            <span id="chart-ticker" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-xs font-black text-cyan-300 tracking-wider">FINLY • 1D</span>
+            <span id="chart-qtype" class="px-2.5 py-1 rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-xs font-bold text-indigo-300">Spot the Pattern</span>
+          </div>
+          <button id="btn-hint" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 transition">
+            <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+            <span id="hint-label">Show Trendlines</span>
+          </button>
+        </div>
+
+        <div class="relative w-full h-64 sm:h-80 rounded-2xl bg-slate-950/90 border border-slate-800 overflow-hidden">
+          <canvas id="chart-canvas" class="w-full h-full block"></canvas>
+        </div>
+      </div>
+
+      <!-- Question & Choices -->
+      <div class="arcade-card rounded-3xl p-5 sm:p-6">
+        <h3 id="question-text" class="text-lg sm:text-xl font-extrabold text-white mb-4">
+          Which chart pattern is forming on this chart?
+        </h3>
+
+        <div id="choices-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Post-Answer Reveal Drawer -->
+        <div id="reveal-panel" class="hidden mt-5 p-4 rounded-2xl border animate-pop">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <div class="flex items-center gap-2">
+              <span id="reveal-badge" class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase"></span>
+              <h4 id="reveal-title" class="font-black text-base sm:text-lg text-white"></h4>
+            </div>
+            <span id="reveal-points" class="text-xs font-extrabold text-amber-300"></span>
+          </div>
+          <p id="reveal-desc" class="text-xs sm:text-sm text-slate-200 leading-relaxed mb-3"></p>
+          <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-700/80 text-xs text-cyan-200 mb-4">
+            <strong>Confirmation &amp; Trap Check:</strong> <span id="reveal-rule"></span>
+          </div>
+          <button id="btn-next-round" type="button" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-sm sm:text-base transition flex items-center justify-center gap-2">
+            <span id="next-round-label">Next Chart</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SCREEN 3: GAME OVER / VICTORY -->
+    <section id="screen-end" class="hidden animate-pop">
+      <div class="arcade-card rounded-3xl p-6 sm:p-10 text-center max-w-2xl mx-auto">
+        <div id="end-icon-wrap" class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950 shadow-lg mb-4">
+          <i data-lucide="trophy" class="w-8 h-8"></i>
+        </div>
+        <div class="text-xs font-extrabold uppercase tracking-wider text-emerald-400 mb-1" id="end-subtitle">Arcade Complete!</div>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mb-2" id="end-title">Master Pattern Hunter</h2>
+        <p class="text-slate-300 text-sm sm:text-base mb-6" id="end-msg">Sharp eyes! You read price action like a pro.</p>
+
+        <div class="grid grid-cols-3 gap-3 mb-6">
+          <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-700">
+            <div class="text-xs text-slate-400 font-semibold">Final Score</div>
+            <div class="text-2xl font-black text-emerald-400 mt-1" id="end-score">0</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-700">
+            <div class="text-xs text-slate-400 font-semibold">Accuracy</div>
+            <div class="text-2xl font-black text-cyan-400 mt-1" id="end-acc">0%</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-700">
+            <div class="text-xs text-slate-400 font-semibold">Best Streak</div>
+            <div class="text-2xl font-black text-amber-400 mt-1" id="end-streak">0</div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <button id="btn-play-again" type="button" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm sm:text-base transition">
+            Play Arcade Again
+          </button>
+          <button id="btn-open-guide-end" type="button" class="px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-sm sm:text-base transition">
+            Study Pattern Field Guide
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PATTERN FIELD GUIDE MODAL (LIST + CLICKABLE FULL-SIZE INSPECTOR) -->
+  <div id="modal-guide" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 rounded-3xl max-w-5xl w-full max-h-[92vh] overflow-y-auto border border-slate-700 shadow-2xl p-5 sm:p-6 animate-pop">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+        <div class="flex items-center gap-2">
+          <i data-lucide="book-open" class="w-5 h-5 text-cyan-400"></i>
+          <h3 class="font-black text-lg text-white" id="guide-modal-title">Chart Pattern Field Guide (20 Classics)</h3>
+        </div>
+        <button id="btn-close-guide" type="button" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- LIST VIEW -->
+      <div id="guide-list-view">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div class="flex flex-wrap gap-2">
+            <button type="button" data-filter="all" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950">All (20)</button>
+            <button type="button" data-filter="Bullish" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-emerald-300 hover:bg-slate-700">Bullish</button>
+            <button type="button" data-filter="Bearish" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-rose-300 hover:bg-slate-700">Bearish</button>
+            <button type="button" data-filter="Bilateral" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-amber-300 hover:bg-slate-700">Bilateral</button>
+          </div>
+          <span class="text-xs text-slate-400">Click any pattern card to inspect full-size &amp; animate</span>
+        </div>
+
+        <div id="guide-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated by JS with large clickable cards -->
+        </div>
+      </div>
+
+      <!-- INTERACTIVE DETAIL INSPECTOR VIEW -->
+      <div id="guide-detail-view" class="hidden space-y-4 animate-pop">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <button id="btn-guide-back" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 transition">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span>All Patterns</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <button id="btn-guide-prev" type="button" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700">← Prev</button>
+            <button id="btn-guide-next" type="button" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700">Next →</button>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span id="detail-bias-badge" class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase"></span>
+              <span id="detail-cat-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700"></span>
+            </div>
+            <h4 id="detail-name" class="text-2xl font-black text-white">Pattern Name</h4>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-detail-lines" type="button" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition">
+              Toggle Trendlines
+            </button>
+            <button id="btn-detail-replay" type="button" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition">
+              ▶ Replay Breakout
+            </button>
+          </div>
+        </div>
+
+        <div class="relative w-full h-72 sm:h-80 rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden">
+          <canvas id="detail-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-emerald-400 mb-1">How to Spot It</div>
+            <p id="detail-desc" class="text-sm text-slate-200 leading-relaxed"></p>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-cyan-400 mb-1">Confirmation &amp; Common Trap</div>
+            <p class="text-sm text-white font-semibold mb-1" id="detail-trigger"></p>
+            <p id="detail-rule" class="text-xs text-slate-300 leading-relaxed"></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ---------- AUDIO ENGINE ----------
+    let audioCtx = null;
+    let soundMuted = false;
+
+    function playSfx(type) {
+      if (soundMuted) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'win') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.08);
+          osc.frequency.setValueAtTime(783.99, now + 0.16);
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.start(now);
+          osc.stop(now + 0.36);
+        } else if (type === 'lose') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(200, now);
+          osc.frequency.exponentialRampToValueAtTime(110, now + 0.22);
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc.start(now);
+          osc.stop(now + 0.26);
+        } else {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(480, now);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.09);
+        }
+      } catch (e) {}
+    }
+
+    // ---------- GROUNDED 20 CHART PATTERNS ----------
+    const TICKERS = ['FINLY', 'SOLAR', 'CHIPZ', 'VOLT', 'CLOUD', 'AERO', 'NEXUS', 'BIOX', 'QUANT', 'APEX'];
+
+    const PATTERNS = [
+      {
+        id: 'hs',
+        name: 'Head & Shoulders',
+        category: 'Reversal',
+        bias: 'Bearish',
+        biasFull: 'Bearish Reversal',
+        trigger: 'Price closes below the neckline',
+        desc: 'Three peaks after an uptrend: left shoulder, higher head, and lower right shoulder. Shows buyers losing momentum.',
+        rule: 'Wait for a confirmed break and close below the neckline—guessing before the break often leads to false signals.',
+        points: [25, 45, 65, 48, 62, 86, 48, 63, 47],
+        breakout: [40, 32, 26, 20, 15],
+        lines: [{ x1: 0.28, y1: 48, x2: 0.92, y2: 47, label: 'Neckline' }]
+      },
+      {
+        id: 'ihs',
+        name: 'Inverse Head & Shoulders',
+        category: 'Reversal',
+        bias: 'Bullish',
+        biasFull: 'Bullish Reversal',
+        trigger: 'Price closes above the neckline',
+        desc: 'Three troughs after a downtrend: left shoulder, deeper head, and higher right shoulder. Signals sellers running out of steam.',
+        rule: 'Confirmation arrives when price breaks and closes above the neckline connecting the two middle peaks.',
+        points: [78, 56, 36, 54, 38, 16, 54, 39, 55],
+        breakout: [62, 70, 77, 83, 89],
+        lines: [{ x1: 0.28, y1: 54, x2: 0.92, y2: 55, label: 'Neckline' }]
+      },
+      {
+        id: 'dtop',
+        name: 'Double Top',
+        category: 'Reversal',
+        bias: 'Bearish',
+        biasFull: 'Bearish Reversal',
+        trigger: 'Price breaks below the middle valley support',
+        desc: 'An M-shaped formation where price tests a resistance ceiling twice and fails both times.',
+        rule: 'Do not short just on the second peak—wait for price to break below the support valley between the two tops.',
+        points: [28, 52, 78, 54, 48, 76, 56, 47],
+        breakout: [38, 30, 24, 18, 13],
+        lines: [
+          { x1: 0.2, y1: 77, x2: 0.78, y2: 77, label: 'Resistance' },
+          { x1: 0.38, y1: 48, x2: 0.92, y2: 48, label: 'Support' }
+        ]
+      },
+      {
+        id: 'dbot',
+        name: 'Double Bottom',
+        category: 'Reversal',
+        bias: 'Bullish',
+        biasFull: 'Bullish Reversal',
+        trigger: 'Price closes above the middle peak',
+        desc: 'A W-shaped formation where sellers fail twice to push price below a strong support floor.',
+        rule: 'The pattern is only confirmed when price closes above the middle peak between the two lows.',
+        points: [75, 50, 24, 46, 54, 25, 45, 55],
+        breakout: [63, 71, 78, 84, 90],
+        lines: [
+          { x1: 0.2, y1: 24, x2: 0.78, y2: 24, label: 'Support' },
+          { x1: 0.38, y1: 54, x2: 0.92, y2: 54, label: 'Neckline' }
+        ]
+      },
+      {
+        id: 'ttop',
+        name: 'Triple Top',
+        category: 'Reversal',
+        bias: 'Bearish',
+        biasFull: 'Bearish Reversal',
+        trigger: 'Price closes below the support neckline after 3 peaks',
+        desc: 'Price tests the same resistance ceiling three times after an uptrend and fails to break through.',
+        rule: 'Takes longer to form than a Double Top; confirmation only arrives on a close below support.',
+        points: [24, 54, 78, 50, 77, 49, 78, 50],
+        breakout: [41, 32, 24, 17, 11],
+        lines: [
+          { x1: 0.2, y1: 78, x2: 0.85, y2: 78, label: 'Resistance' },
+          { x1: 0.35, y1: 49, x2: 0.94, y2: 49, label: 'Neckline' }
+        ]
+      },
+      {
+        id: 'tbot',
+        name: 'Triple Bottom',
+        category: 'Reversal',
+        bias: 'Bullish',
+        biasFull: 'Bullish Reversal',
+        trigger: 'Price closes above the resistance neckline after 3 lows',
+        desc: 'Price bounces off the same support floor three times after a downtrend, showing buyers absorbing all supply.',
+        rule: 'Wait for a decisive close above the resistance neckline separating the three troughs.',
+        points: [78, 48, 22, 50, 23, 51, 22, 50],
+        breakout: [59, 68, 76, 84, 91],
+        lines: [
+          { x1: 0.2, y1: 22, x2: 0.85, y2: 22, label: 'Support' },
+          { x1: 0.35, y1: 50, x2: 0.94, y2: 50, label: 'Neckline' }
+        ]
+      },
+      {
+        id: 'asc_tri',
+        name: 'Ascending Triangle',
+        category: 'Continuation',
+        bias: 'Bullish',
+        biasFull: 'Bullish Continuation',
+        trigger: 'Price closes above the flat top resistance',
+        desc: 'Flat resistance on top with rising higher lows below—buyers are stepping in more aggressively on every dip.',
+        rule: 'Wait for a clean candle close above the flat resistance ceiling before expecting the next leg up.',
+        points: [22, 46, 72, 40, 73, 52, 72, 62, 73],
+        breakout: [80, 86, 91, 95, 97],
+        lines: [
+          { x1: 0.22, y1: 73, x2: 0.92, y2: 73, label: 'Flat Resistance' },
+          { x1: 0.32, y1: 38, x2: 0.92, y2: 65, label: 'Rising Lows' }
+        ]
+      },
+      {
+        id: 'desc_tri',
+        name: 'Descending Triangle',
+        category: 'Continuation',
+        bias: 'Bearish',
+        biasFull: 'Bearish Continuation',
+        trigger: 'Price closes below the flat bottom support',
+        desc: 'Flat support floor below with falling lower highs above—sellers are pressing down harder after each bounce.',
+        rule: 'Breakdown is confirmed once price closes decisively below the flat support floor.',
+        points: [80, 56, 28, 60, 27, 48, 28, 38, 27],
+        breakout: [20, 14, 10, 7, 5],
+        lines: [
+          { x1: 0.22, y1: 27, x2: 0.92, y2: 27, label: 'Flat Support' },
+          { x1: 0.32, y1: 62, x2: 0.92, y2: 35, label: 'Falling Highs' }
+        ]
+      },
+      {
+        id: 'sym_tri',
+        name: 'Symmetrical Triangle',
+        category: 'Bilateral',
+        bias: 'Bilateral',
+        biasFull: 'Bilateral Consolidation',
+        trigger: 'Wait for a breakout above upper OR below lower trendline',
+        desc: 'Lower highs and higher lows converging into a tight coil. Volatility is compressing before a big move.',
+        rule: 'Because it is bilateral, it can break either way! Never guess early—wait for the breakout candle.',
+        points: [32, 72, 36, 64, 42, 58, 47, 54, 50],
+        breakout: [60, 68, 75, 81, 86],
+        lines: [
+          { x1: 0.14, y1: 74, x2: 0.92, y2: 52, label: 'Upper Trend' },
+          { x1: 0.14, y1: 32, x2: 0.92, y2: 49, label: 'Lower Trend' }
+        ]
+      },
+      {
+        id: 'bull_flag',
+        name: 'Bull Flag',
+        category: 'Continuation',
+        bias: 'Bullish',
+        biasFull: 'Bullish Continuation',
+        trigger: 'Price closes above the flag’s upper channel line',
+        desc: 'A sharp rally (flagpole) followed by a gentle, downward-sloping pause channel (flag) on light profit-taking.',
+        rule: 'Watch for price to break out above the upper parallel flag line to resume the uptrend.',
+        points: [16, 36, 60, 78, 70, 74, 65, 69, 61, 66],
+        breakout: [75, 83, 89, 93, 96],
+        lines: [
+          { x1: 0.38, y1: 77, x2: 0.92, y2: 66, label: 'Upper Flag' },
+          { x1: 0.42, y1: 69, x2: 0.92, y2: 58, label: 'Lower Flag' }
+        ]
+      },
+      {
+        id: 'bear_flag',
+        name: 'Bear Flag',
+        category: 'Continuation',
+        bias: 'Bearish',
+        biasFull: 'Bearish Continuation',
+        trigger: 'Price closes below the flag’s lower channel line',
+        desc: 'A sharp drop (flagpole) followed by a weak, upward-sloping bounce channel (flag) before sellers take over again.',
+        rule: 'Breakdown triggers when price closes below the lower parallel trendline of the bounce channel.',
+        points: [86, 65, 42, 22, 30, 26, 35, 31, 40, 35],
+        breakout: [26, 18, 12, 8, 5],
+        lines: [
+          { x1: 0.38, y1: 23, x2: 0.92, y2: 34, label: 'Lower Flag' },
+          { x1: 0.42, y1: 31, x2: 0.92, y2: 42, label: 'Upper Flag' }
+        ]
+      },
+      {
+        id: 'bull_pen',
+        name: 'Bullish Pennant',
+        category: 'Continuation',
+        bias: 'Bullish',
+        biasFull: 'Bullish Continuation',
+        trigger: 'Price breaks above the compact pennant’s upper line',
+        desc: 'A fast rally pole followed by a small, tight converging triangle (pennant) as buyers catch their breath.',
+        rule: 'Breakout above the upper converging line usually resumes the sharp prior uptrend.',
+        points: [14, 38, 62, 80, 66, 76, 69, 74, 71],
+        breakout: [80, 86, 91, 95, 97],
+        lines: [
+          { x1: 0.4, y1: 80, x2: 0.92, y2: 72, label: 'Upper Pennant' },
+          { x1: 0.44, y1: 65, x2: 0.92, y2: 71, label: 'Lower Pennant' }
+        ]
+      },
+      {
+        id: 'bear_pen',
+        name: 'Bearish Pennant',
+        category: 'Continuation',
+        bias: 'Bearish',
+        biasFull: 'Bearish Continuation',
+        trigger: 'Price breaks below the compact pennant’s lower line',
+        desc: 'A steep drop pole followed by a tight converging pause before sellers resume pushing prices down.',
+        rule: 'Wait for a candle close below the lower converging pennant line.',
+        points: [88, 64, 40, 20, 34, 24, 31, 26, 29],
+        breakout: [20, 14, 10, 7, 4],
+        lines: [
+          { x1: 0.4, y1: 20, x2: 0.92, y2: 28, label: 'Lower Pennant' },
+          { x1: 0.44, y1: 35, x2: 0.92, y2: 29, label: 'Upper Pennant' }
+        ]
+      },
+      {
+        id: 'bull_rect',
+        name: 'Bullish Rectangle',
+        category: 'Continuation',
+        bias: 'Bullish',
+        biasFull: 'Bullish Continuation',
+        trigger: 'Price closes above the horizontal resistance box',
+        desc: 'After an uptrend, price pauses sideways between two parallel horizontal support and resistance levels.',
+        rule: 'Sideways ranges can fool impatient traders—wait for a breakout close above the top of the box.',
+        points: [20, 44, 70, 52, 71, 53, 70, 52, 71],
+        breakout: [79, 85, 90, 94, 97],
+        lines: [
+          { x1: 0.24, y1: 71, x2: 0.92, y2: 71, label: 'Resistance' },
+          { x1: 0.28, y1: 52, x2: 0.92, y2: 52, label: 'Support' }
+        ]
+      },
+      {
+        id: 'bear_rect',
+        name: 'Bearish Rectangle',
+        category: 'Continuation',
+        bias: 'Bearish',
+        biasFull: 'Bearish Continuation',
+        trigger: 'Price closes below the horizontal support box',
+        desc: 'After a downtrend, price pauses sideways in a horizontal box before breaking lower.',
+        rule: 'Confirmation comes on a decisive close below the bottom horizontal support line.',
+        points: [84, 58, 30, 48, 29, 47, 30, 48, 29],
+        breakout: [21, 15, 10, 7, 4],
+        lines: [
+          { x1: 0.24, y1: 48, x2: 0.92, y2: 48, label: 'Resistance' },
+          { x1: 0.24, y1: 29, x2: 0.92, y2: 29, label: 'Support' }
+        ]
+      },
+      {
+        id: 'cup',
+        name: 'Cup & Handle',
+        category: 'Continuation',
+        bias: 'Bullish',
+        biasFull: 'Bullish Continuation',
+        trigger: 'Price breaks above the handle / rim resistance',
+        desc: 'A smooth U-shaped rounded bottom (the cup) followed by a shallow pullback (the handle) near the prior high.',
+        rule: 'Avoid V-shaped spikes; a rounded base + tight handle breakout above the rim is the classic confirmation.',
+        points: [74, 52, 34, 24, 22, 26, 38, 56, 73, 64, 68],
+        breakout: [78, 85, 90, 94, 97],
+        lines: [{ x1: 0.1, y1: 74, x2: 0.94, y2: 74, label: 'Rim Resistance' }]
+      },
+      {
+        id: 'round_bot',
+        name: 'Rounding Bottom (Saucer)',
+        category: 'Reversal',
+        bias: 'Bullish',
+        biasFull: 'Bullish Reversal',
+        trigger: 'Price breaks above the prior high rim of the saucer',
+        desc: 'A slow, U-shaped curve after a prolonged downtrend showing selling pressure fading and buyers steadily accumulating.',
+        rule: 'Patience is key—look for rising volume as the right side of the U-shape climbs toward the breakout rim.',
+        points: [76, 56, 40, 28, 22, 20, 22, 29, 43, 60, 75],
+        breakout: [82, 87, 91, 94, 97],
+        lines: [{ x1: 0.08, y1: 76, x2: 0.94, y2: 76, label: 'Breakout Rim' }]
+      },
+      {
+        id: 'rise_wedge',
+        name: 'Rising Wedge',
+        category: 'Reversal',
+        bias: 'Bearish',
+        biasFull: 'Bearish Reversal',
+        trigger: 'Price breaks below the lower upward-sloping trendline',
+        desc: 'Price edges higher inside two converging upward-sloping lines, showing buyers struggling to sustain momentum.',
+        rule: 'Even though price is creeping up, narrowing upward wedges frequently break downward below the lower line.',
+        points: [24, 48, 35, 62, 50, 74, 63, 81, 73],
+        breakout: [62, 50, 39, 29, 20],
+        lines: [
+          { x1: 0.16, y1: 48, x2: 0.9, y2: 83, label: 'Upper Wedge' },
+          { x1: 0.24, y1: 32, x2: 0.9, y2: 72, label: 'Lower Wedge' }
+        ]
+      },
+      {
+        id: 'fall_wedge',
+        name: 'Falling Wedge',
+        category: 'Reversal',
+        bias: 'Bullish',
+        biasFull: 'Bullish Reversal',
+        trigger: 'Price breaks above the upper downward-sloping trendline',
+        desc: 'Price drifts lower inside two converging downward-sloping lines as selling pressure steadily dries up.',
+        rule: 'Confirmation happens when buyers push price decisively above the upper downward trendline.',
+        points: [78, 52, 66, 38, 50, 26, 37, 19, 27],
+        breakout: [39, 52, 64, 75, 84],
+        lines: [
+          { x1: 0.16, y1: 68, x2: 0.9, y2: 28, label: 'Upper Wedge' },
+          { x1: 0.24, y1: 50, x2: 0.9, y2: 18, label: 'Lower Wedge' }
+        ]
+      },
+      {
+        id: 'broad_wedge',
+        name: 'Broadening Megaphone',
+        category: 'Bilateral',
+        bias: 'Bilateral',
+        biasFull: 'Bilateral Consolidation',
+        trigger: 'Price breaks decisively beyond either diverging trendline',
+        desc: 'Successive higher highs and lower lows form an expanding megaphone shape, signaling high volatility and market indecision.',
+        rule: 'Swings inside a megaphone trap stop-losses easily—wait for a clean breakout outside the diverging lines.',
+        points: [52, 60, 44, 68, 36, 76, 28, 82],
+        breakout: [86, 90, 93, 95, 97],
+        lines: [
+          { x1: 0.12, y1: 58, x2: 0.92, y2: 84, label: 'Expanding Highs' },
+          { x1: 0.12, y1: 46, x2: 0.92, y2: 26, label: 'Expanding Lows' }
+        ]
+      }
+    ];
+
+    // ---------- PROCEDURAL CANDLE GENERATOR ----------
+    function buildCandles(pattern, includeBreakout = false) {
+      const basePrice = 80 + Math.floor(Math.random() * 420);
+      const scaleSpan = 20 + Math.random() * 40;
+      const raw = [...pattern.points];
+
+      const dense = [];
+      for (let i = 0; i < raw.length - 1; i++) {
+        const a = raw[i];
+        const b = raw[i + 1];
+        dense.push(a);
+        const mid = (a + b) / 2 + (Math.random() - 0.5) * 2.8;
+        dense.push(mid);
+      }
+      dense.push(raw[raw.length - 1]);
+
+      if (includeBreakout) {
+        pattern.breakout.forEach(pt => dense.push(pt + (Math.random() - 0.5) * 1.8));
+      }
+
+      const candles = [];
+      let prevClose = basePrice + (dense[0] / 100) * scaleSpan;
+      for (let i = 0; i < dense.length; i++) {
+        const target = basePrice + (dense[i] / 100) * scaleSpan;
+        const open = prevClose;
+        const close = target + (Math.random() - 0.5) * (scaleSpan * 0.025);
+        const wickUp = Math.random() * (scaleSpan * 0.04);
+        const wickDn = Math.random() * (scaleSpan * 0.04);
+        const high = Math.max(open, close) + wickUp;
+        const low = Math.min(open, close) - wickDn;
+        candles.push({ open, close, high, low, isBreakout: i >= dense.length - (includeBreakout ? pattern.breakout.length : 0) });
+        prevClose = close;
+      }
+      return { candles, basePrice, scaleSpan };
+    }
+
+    function drawCandlestickChart(canvas, candleData, pattern, showLines, visibleCount) {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      const W = rect.width;
+      const H = rect.height;
+      ctx.clearRect(0, 0, W, H);
+
+      ctx.strokeStyle = 'rgba(51, 65, 85, 0.35)';
+      ctx.lineWidth = 1;
+      for (let g = 1; g < 5; g++) {
+        const y = (H / 5) * g;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+
+      const { candles, basePrice, scaleSpan } = candleData;
+      const padX = 20;
+      const padY = 20;
+      const allVals = candles.flatMap(c => [c.high, c.low]);
+      const minP = Math.min(...allVals, basePrice);
+      const maxP = Math.max(...allVals, basePrice + scaleSpan);
+      const range = Math.max(1, maxP - minP);
+
+      const toY = (price) => H - padY - ((price - minP) / range) * (H - padY * 2);
+      const totalSlots = candles.length;
+      const step = (W - padX * 2) / totalSlots;
+      const bodyW = Math.max(4, Math.min(16, step * 0.62));
+
+      const limit = Math.min(candles.length, visibleCount);
+      for (let i = 0; i < limit; i++) {
+        const c = candles[i];
+        const x = padX + i * step + step / 2;
+        const yOpen = toY(c.open);
+        const yClose = toY(c.close);
+        const yHigh = toY(c.high);
+        const yLow = toY(c.low);
+        const isUp = c.close >= c.open;
+
+        const color = c.isBreakout
+          ? (isUp ? '#34d399' : '#fb7185')
+          : (isUp ? '#10b981' : '#f43f5e');
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(x, yHigh);
+        ctx.lineTo(x, yLow);
+        ctx.stroke();
+
+        ctx.fillStyle = color;
+        const top = Math.min(yOpen, yClose);
+        const h = Math.max(2.5, Math.abs(yClose - yOpen));
+        ctx.fillRect(x - bodyW / 2, top, bodyW, h);
+      }
+
+      if (showLines && pattern.lines) {
+        ctx.save();
+        ctx.setLineDash([6, 5]);
+        ctx.lineWidth = 2;
+        pattern.lines.forEach(ln => {
+          const x1 = padX + ln.x1 * (W - padX * 2) * (pattern.points.length * 2 - 1) / totalSlots;
+          const x2 = padX + ln.x2 * (W - padX * 2) * (pattern.points.length * 2 - 1) / totalSlots;
+          const y1 = toY(basePrice + (ln.y1 / 100) * scaleSpan);
+          const y2 = toY(basePrice + (ln.y2 / 100) * scaleSpan);
+          ctx.strokeStyle = '#fbbf24';
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+
+          ctx.fillStyle = '#fbbf24';
+          ctx.font = 'bold 11px Inter, sans-serif';
+          ctx.fillText(ln.label, x1 + 4, y1 - 6);
+        });
+        ctx.restore();
+      }
+    }
+
+    // ---------- GAME STATE ----------
+    let game = {
+      mode: 'arcade',
+      round: 1,
+      maxRounds: 10,
+      score: 0,
+      combo: 0,
+      bestStreak: 0,
+      correctCount: 0,
+      lives: 3,
+      deck: [],
+      currentPattern: null,
+      currentQuestion: null,
+      candleData: null,
+      showHint: false,
+      answered: false,
+      animFrame: null
+    };
+
+    function getHighScore() {
+      try { return Number(localStorage.getItem('chartblaster_hi') || 0); } catch (e) { return 0; }
+    }
+    function saveHighScore(val) {
+      try {
+        if (val > getHighScore()) localStorage.setItem('chartblaster_hi', String(val));
+      } catch (e) {}
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function startMode(mode) {
+      playSfx('click');
+      game = {
+        mode,
+        round: 1,
+        maxRounds: mode === 'arcade' ? 10 : 999,
+        score: 0,
+        combo: 0,
+        bestStreak: 0,
+        correctCount: 0,
+        lives: 3,
+        deck: shuffle(PATTERNS),
+        currentPattern: null,
+        currentQuestion: null,
+        candleData: null,
+        showHint: mode === 'zen',
+        answered: false,
+        animFrame: null
+      };
+
+      document.getElementById('screen-start').classList.add('hidden');
+      document.getElementById('screen-end').classList.add('hidden');
+      document.getElementById('screen-game').classList.remove('hidden');
+      document.getElementById('btn-home').classList.remove('hidden');
+
+      loadRound();
+    }
+
+    function buildQuestion(pattern) {
+      const qTypes = ['spot', 'bias', 'trigger'];
+      const qType = qTypes[Math.floor(Math.random() * qTypes.length)];
+
+      if (qType === 'spot') {
+        const distractors = shuffle(PATTERNS.filter(p => p.id !== pattern.id)).slice(0, 3).map(p => p.name);
+        return {
+          badge: 'Spot the Pattern',
+          prompt: 'Which classic chart pattern is forming here?',
+          options: shuffle([pattern.name, ...distractors]),
+          correct: pattern.name
+        };
+      } else if (qType === 'bias') {
+        const options = ['Bullish Reversal', 'Bearish Reversal', 'Bullish Continuation', 'Bearish Continuation'];
+        if (pattern.biasFull === 'Bilateral Consolidation') options[3] = 'Bilateral Consolidation';
+        return {
+          badge: 'Predict the Move',
+          prompt: 'What type of signal does this formation typically represent?',
+          options: shuffle(options),
+          correct: pattern.biasFull
+        };
+      } else {
+        const distractors = shuffle(PATTERNS.filter(p => p.id !== pattern.id)).slice(0, 3).map(p => p.trigger);
+        return {
+          badge: 'Confirmation Point',
+          prompt: 'What confirms this pattern is ready for a real breakout?',
+          options: shuffle([pattern.trigger, ...distractors]),
+          correct: pattern.trigger
+        };
+      }
+    }
+
+    function animateChart(includeBreakout = false) {
+      if (game.animFrame) clearTimeout(game.animFrame);
+      const canvas = document.getElementById('chart-canvas');
+      const total = game.candleData.candles.length;
+      const breakoutStart = total - game.currentPattern.breakout.length;
+      let count = includeBreakout ? breakoutStart : 1;
+
+      function step() {
+        drawCandlestickChart(canvas, game.candleData, game.currentPattern, game.showHint, count);
+        if (count < total) {
+          const delay = (includeBreakout && count >= breakoutStart) ? 160 : 85;
+          count += 1;
+          game.animFrame = setTimeout(step, delay);
+        }
+      }
+      step();
+    }
+
+    function loadRound() {
+      if (game.deck.length === 0) game.deck = shuffle(PATTERNS);
+      const pattern = game.deck.pop();
+      game.currentPattern = pattern;
+      game.currentQuestion = buildQuestion(pattern);
+      game.candleData = buildCandles(pattern, false);
+      game.showHint = game.mode === 'zen';
+      game.answered = false;
+
+      const ticker = TICKERS[Math.floor(Math.random() * TICKERS.length)];
+      const tf = ['15M', '1H', '4H', '1D'][Math.floor(Math.random() * 4)];
+      document.getElementById('chart-ticker').textContent = `${ticker} • ${tf}`;
+      document.getElementById('chart-qtype').textContent = game.currentQuestion.badge;
+      document.getElementById('question-text').textContent = game.currentQuestion.prompt;
+      document.getElementById('hint-label').textContent = game.showHint ? 'Hide Trendlines' : 'Show Trendlines';
+      document.getElementById('reveal-panel').classList.add('hidden');
+
+      const grid = document.getElementById('choices-grid');
+      grid.innerHTML = game.currentQuestion.options.map((opt, idx) => `
+        <button type="button" data-opt="${idx}" class="choice-tile p-4 rounded-2xl bg-slate-800/80 border-2 border-slate-700 text-left font-bold text-sm sm:text-base text-slate-100 flex items-center justify-between gap-2">
+          <span>${opt}</span>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 shrink-0"></i>
+        </button>
+      `).join('');
+
+      document.querySelectorAll('.choice-tile').forEach(btn => {
+        btn.addEventListener('click', () => handleAnswer(Number(btn.dataset.opt)));
+      });
+
+      updateHUD();
+      animateChart(false);
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function handleAnswer(idx) {
+      if (game.answered) return;
+      game.answered = true;
+
+      const chosen = game.currentQuestion.options[idx];
+      const isRight = chosen === game.currentQuestion.correct;
+      const tiles = document.querySelectorAll('.choice-tile');
+
+      tiles.forEach((btn, i) => {
+        btn.disabled = true;
+        const txt = game.currentQuestion.options[i];
+        if (txt === game.currentQuestion.correct) {
+          btn.className = 'choice-tile p-4 rounded-2xl bg-emerald-500/20 border-2 border-emerald-400 text-left font-bold text-sm sm:text-base text-emerald-200 flex items-center justify-between gap-2';
+        } else if (i === idx && !isRight) {
+          btn.className = 'choice-tile p-4 rounded-2xl bg-rose-500/20 border-2 border-rose-500 text-left font-bold text-sm sm:text-base text-rose-200 flex items-center justify-between gap-2';
+        }
+      });
+
+      game.showHint = true;
+      game.candleData = buildCandles(game.currentPattern, true);
+      animateChart(true);
+
+      let pts = 0;
+      if (isRight) {
+        game.combo += 1;
+        game.bestStreak = Math.max(game.bestStreak, game.combo);
+        game.correctCount += 1;
+        const mult = Math.min(5, game.combo);
+        pts = 100 * mult;
+        game.score += pts;
+        playSfx('win');
+        if (game.combo >= 3 && window.confetti) {
+          confetti({ particleCount: 40, spread: 55, origin: { y: 0.7 } });
+        }
+      } else {
+        game.combo = 0;
+        if (game.mode === 'arcade') game.lives = Math.max(0, game.lives - 1);
+        playSfx('lose');
+      }
+
+      const rev = document.getElementById('reveal-panel');
+      rev.classList.remove('hidden');
+      rev.className = isRight
+        ? 'mt-5 p-4 rounded-2xl border border-emerald-500/40 bg-emerald-950/40 animate-pop'
+        : 'mt-5 p-4 rounded-2xl border border-rose-500/40 bg-rose-950/40 animate-pop';
+
+      const badge = document.getElementById('reveal-badge');
+      badge.textContent = isRight ? 'NAILED IT!' : 'MISSED!';
+      badge.className = isRight
+        ? 'px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-emerald-400 text-slate-950'
+        : 'px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-rose-500 text-white';
+
+      document.getElementById('reveal-title').textContent = `${game.currentPattern.name} (${game.currentPattern.biasFull})`;
+      document.getElementById('reveal-points').textContent = isRight ? `+${pts} pts (${Math.min(5, game.combo)}× Combo)` : 'Combo Reset';
+      document.getElementById('reveal-desc').textContent = game.currentPattern.desc;
+      document.getElementById('reveal-rule').textContent = game.currentPattern.rule;
+
+      const isLast = game.mode === 'arcade' && (game.round >= game.maxRounds || game.lives <= 0);
+      document.getElementById('next-round-label').textContent = isLast ? 'See Final Score' : 'Next Chart';
+
+      updateHUD();
+    }
+
+    function nextRound() {
+      playSfx('click');
+      if (game.mode === 'arcade' && (game.round >= game.maxRounds || game.lives <= 0)) {
+        endGame();
+      } else {
+        game.round += 1;
+        loadRound();
+      }
+    }
+
+    function updateHUD() {
+      document.getElementById('hud-round').textContent = game.mode === 'arcade' ? `${game.round} / ${game.maxRounds}` : `#${game.round}`;
+      document.getElementById('hud-score').textContent = game.score.toLocaleString();
+      const mult = Math.max(1, Math.min(5, game.combo));
+      document.getElementById('hud-combo').textContent = `${mult}×`;
+
+      const comboCard = document.getElementById('hud-combo-card');
+      if (game.combo >= 3) comboCard.classList.add('combo-glow');
+      else comboCard.classList.remove('combo-glow');
+
+      if (game.mode === 'arcade') {
+        document.getElementById('hud-lives-label').textContent = 'Lives';
+        document.getElementById('hud-lives').textContent = '❤️'.repeat(game.lives) + '🖤'.repeat(3 - game.lives);
+      } else {
+        document.getElementById('hud-lives-label').textContent = 'Mode';
+        document.getElementById('hud-lives').textContent = 'ZEN ∞';
+      }
+    }
+
+    function endGame() {
+      document.getElementById('screen-game').classList.add('hidden');
+      document.getElementById('screen-end').classList.remove('hidden');
+
+      saveHighScore(game.score);
+      const acc = Math.round((game.correctCount / Math.max(1, game.round)) * 100);
+
+      document.getElementById('end-score').textContent = game.score.toLocaleString();
+      document.getElementById('end-acc').textContent = `${acc}%`;
+      document.getElementById('end-streak').textContent = `${game.bestStreak}🔥`;
+
+      if (game.lives > 0 && acc >= 70) {
+        document.getElementById('end-subtitle').textContent = 'Arcade Victory!';
+        document.getElementById('end-title').textContent = 'Master Pattern Hunter';
+        document.getElementById('end-msg').textContent = 'You spotted breakouts and avoided early-entry traps like a seasoned trader!';
+        if (window.confetti) confetti({ particleCount: 95, spread: 75, origin: { y: 0.6 } });
+      } else {
+        document.getElementById('end-subtitle').textContent = game.lives === 0 ? 'Out of Hearts!' : 'Run Complete!';
+        document.getElementById('end-title').textContent = 'Keep Practicing!';
+        document.getElementById('end-msg').textContent = 'Check the Pattern Field Guide to sharpen your eye for necklines and triangles.';
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // ---------- INTERACTIVE FIELD GUIDE (LARGE CARDS + DETAIL INSPECTOR) ----------
+    let detailState = { index: 0, showLines: true, candleData: null, animFrame: null };
+
+    function renderGuide(filter = 'all') {
+      document.getElementById('guide-detail-view').classList.add('hidden');
+      document.getElementById('guide-list-view').classList.remove('hidden');
+
+      const grid = document.getElementById('guide-grid');
+      const items = filter === 'all' ? PATTERNS : PATTERNS.filter(p => p.bias === filter);
+
+      grid.innerHTML = items.map(p => {
+        const badgeColor = p.bias === 'Bullish' ? 'bg-emerald-500/20 text-emerald-300' : p.bias === 'Bearish' ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300';
+        return `
+          <button type="button" data-pattern-id="${p.id}" class="guide-card-btn text-left p-4 rounded-2xl bg-slate-800/75 hover:bg-slate-800 border-2 border-slate-700 hover:border-cyan-400 transition flex flex-col justify-between group">
+            <div class="w-full">
+              <div class="flex items-center justify-between gap-2 mb-2.5">
+                <span class="text-sm font-black text-white group-hover:text-cyan-300 transition">${p.name}</span>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold ${badgeColor}">${p.bias}</span>
+              </div>
+              <div class="h-40 w-full rounded-xl bg-slate-950 border border-slate-800 mb-3 overflow-hidden relative">
+                <canvas id="guide-canvas-${p.id}" class="w-full h-full block"></canvas>
+                <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-slate-900/90 border border-slate-700 text-[10px] font-bold text-cyan-300 opacity-90 group-hover:opacity-100">
+                  Click to Inspect 🔍
+                </span>
+              </div>
+              <p class="text-xs text-slate-300 mb-2 leading-relaxed">${p.desc}</p>
+            </div>
+            <div class="w-full text-[11px] text-cyan-300 bg-slate-950/70 p-2.5 rounded-xl border border-slate-800">
+              <strong>Trigger:</strong> ${p.trigger}
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.guide-card-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = PATTERNS.findIndex(p => p.id === btn.dataset.patternId);
+          openPatternInspector(idx >= 0 ? idx : 0);
+        });
+      });
+
+      requestAnimationFrame(() => {
+        items.forEach(p => {
+          const c = document.getElementById(`guide-canvas-${p.id}`);
+          if (c) {
+            const data = buildCandles(p, true);
+            drawCandlestickChart(c, data, p, true, data.candles.length);
+          }
+        });
+      });
+    }
+
+    function openPatternInspector(idx) {
+      playSfx('click');
+      detailState.index = (idx + PATTERNS.length) % PATTERNS.length;
+      detailState.showLines = true;
+      const p = PATTERNS[detailState.index];
+      detailState.candleData = buildCandles(p, true);
+
+      document.getElementById('guide-list-view').classList.add('hidden');
+      document.getElementById('guide-detail-view').classList.remove('hidden');
+
+      const badgeColor = p.bias === 'Bullish' ? 'bg-emerald-500/20 text-emerald-300' : p.bias === 'Bearish' ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300';
+      const bEl = document.getElementById('detail-bias-badge');
+      bEl.textContent = p.biasFull;
+      bEl.className = `px-2.5 py-0.5 rounded-full text-xs font-black uppercase ${badgeColor}`;
+
+      document.getElementById('detail-cat-badge').textContent = p.category;
+      document.getElementById('detail-name').textContent = `${detailState.index + 1}. ${p.name}`;
+      document.getElementById('detail-desc').textContent = p.desc;
+      document.getElementById('detail-trigger').textContent = `Trigger: ${p.trigger}`;
+      document.getElementById('detail-rule').textContent = p.rule;
+
+      animateInspector(true);
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function animateInspector(animateBreakout = true) {
+      if (detailState.animFrame) clearTimeout(detailState.animFrame);
+      const p = PATTERNS[detailState.index];
+      const canvas = document.getElementById('detail-canvas');
+      const total = detailState.candleData.candles.length;
+      const breakoutStart = total - p.breakout.length;
+      let count = animateBreakout ? 1 : total;
+
+      function step() {
+        drawCandlestickChart(canvas, detailState.candleData, p, detailState.showLines, count);
+        if (count < total) {
+          const delay = count >= breakoutStart ? 180 : 105;
+          count += 1;
+          detailState.animFrame = setTimeout(step, delay);
+        }
+      }
+      step();
+    }
+
+    // ---------- EVENT LISTENERS ----------
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('menu-highscore').textContent = getHighScore().toLocaleString();
+      if (window.lucide) lucide.createIcons();
+
+      document.getElementById('btn-start-arcade').addEventListener('click', () => startMode('arcade'));
+      document.getElementById('btn-start-zen').addEventListener('click', () => startMode('zen'));
+      document.getElementById('btn-play-again').addEventListener('click', () => startMode('arcade'));
+
+      document.getElementById('btn-next-round').addEventListener('click', nextRound);
+
+      document.getElementById('btn-hint').addEventListener('click', () => {
+        playSfx('click');
+        game.showHint = !game.showHint;
+        document.getElementById('hint-label').textContent = game.showHint ? 'Hide Trendlines' : 'Show Trendlines';
+        const canvas = document.getElementById('chart-canvas');
+        drawCandlestickChart(canvas, game.candleData, game.currentPattern, game.showHint, game.candleData.candles.length);
+      });
+
+      const goHome = () => {
+        playSfx('click');
+        if (game.animFrame) clearTimeout(game.animFrame);
+        document.getElementById('screen-game').classList.add('hidden');
+        document.getElementById('screen-end').classList.add('hidden');
+        document.getElementById('screen-start').classList.remove('hidden');
+        document.getElementById('btn-home').classList.add('hidden');
+        document.getElementById('menu-highscore').textContent = getHighScore().toLocaleString();
+      };
+      document.getElementById('btn-home').addEventListener('click', goHome);
+
+      document.getElementById('btn-sound').addEventListener('click', () => {
+        soundMuted = !soundMuted;
+        const icon = document.getElementById('icon-sound');
+        icon.setAttribute('data-lucide', soundMuted ? 'volume-x' : 'volume-2');
+        if (window.lucide) lucide.createIcons();
+      });
+
+      // Field Guide Modal & Inspector Controls
+      const modal = document.getElementById('modal-guide');
+      const openGuide = () => {
+        playSfx('click');
+        modal.classList.remove('hidden');
+        renderGuide('all');
+      };
+      document.getElementById('btn-guide').addEventListener('click', openGuide);
+      document.getElementById('btn-open-guide-end').addEventListener('click', openGuide);
+      document.getElementById('btn-close-guide').addEventListener('click', () => {
+        if (detailState.animFrame) clearTimeout(detailState.animFrame);
+        modal.classList.add('hidden');
+      });
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          if (detailState.animFrame) clearTimeout(detailState.animFrame);
+          modal.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('btn-guide-back').addEventListener('click', () => {
+        if (detailState.animFrame) clearTimeout(detailState.animFrame);
+        renderGuide('all');
+      });
+      document.getElementById('btn-guide-prev').addEventListener('click', () => openPatternInspector(detailState.index - 1));
+      document.getElementById('btn-guide-next').addEventListener('click', () => openPatternInspector(detailState.index + 1));
+      document.getElementById('btn-detail-lines').addEventListener('click', () => {
+        detailState.showLines = !detailState.showLines;
+        animateInspector(false);
+      });
+      document.getElementById('btn-detail-replay').addEventListener('click', () => {
+        detailState.candleData = buildCandles(PATTERNS[detailState.index], true);
+        animateInspector(true);
+      });
+
+      document.querySelectorAll('.guide-filter').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.guide-filter').forEach(b => {
+            b.className = b === btn
+              ? 'guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950'
+              : 'guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700';
+          });
+          renderGuide(btn.dataset.filter);
+        });
+      });
+
+      window.addEventListener('resize', () => {
+        if (!document.getElementById('screen-game').classList.contains('hidden') && game.candleData) {
+          const canvas = document.getElementById('chart-canvas');
+          drawCandlestickChart(canvas, game.candleData, game.currentPattern, game.showHint, game.candleData.candles.length);
+        }
+        if (!document.getElementById('guide-detail-view').classList.contains('hidden') && detailState.candleData) {
+          animateInspector(false);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
