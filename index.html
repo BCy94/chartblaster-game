@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />z
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
@@ -59,14 +59,14 @@
         </div>
         <div>
           <h1 class="font-black text-base sm:text-lg tracking-tight text-white leading-tight">ChartBlaster <span class="text-emerald-400 font-extrabold text-xs sm:text-sm">by SCI</span></h1>
-          <p class="text-[11px] text-slate-400 font-semibold hidden sm:block">So-Called Investor • Pattern Hunter</p>
+          <p class="text-[11px] text-slate-400 font-semibold hidden sm:block">So-Called Investor • Section-Wise Chart Literacy</p>
         </div>
       </div>
 
       <div class="flex items-center gap-2">
         <button id="btn-guide" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition">
           <i data-lucide="book-open" class="w-4 h-4"></i>
-          <span>Field Guide (20)</span>
+          <span>Field Guide (26)</span>
         </button>
         <button id="btn-sound" type="button" class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition" title="Toggle Sound">
           <i id="icon-sound" data-lucide="volume-2" class="w-4 h-4"></i>
@@ -81,43 +81,39 @@
 
   <main class="max-w-5xl mx-auto px-4 py-6">
 
-    <!-- SCREEN 1: START MENU -->
+    <!-- SCREEN 1: SECTION-WISE START MENU -->
     <section id="screen-start" class="animate-pop space-y-6">
-      <div class="arcade-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-extrabold uppercase tracking-wider mb-4">
+      <div class="arcade-card rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-extrabold uppercase tracking-wider mb-3">
           <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-          So-Called Investor (SCI) • 20 Real Chart Patterns
+          So-Called Investor (SCI) • 26 Chart Patterns
         </div>
-        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
-          Spot the Pattern. <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Call the Breakout!</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight mb-2">
+          Learn Chart Patterns <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Section by Section</span>
         </h2>
-        <p class="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base mb-6">
-          Every round draws a fresh, animated candlestick chart from 20 classic market formations with rotating question styles—name the pattern, predict bullish vs. bearish breakouts, or spot the confirmation trigger!
+        <p class="text-slate-300 max-w-2xl mx-auto text-xs sm:text-sm mb-5">
+          Choose a learning section below or take on the Full 26-Pattern Boss Mix. Spot formations, identify bullish vs. bearish structure, and learn confirmation rules—strictly for educational knowledge.
         </p>
 
-        <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-slate-900/90 border border-slate-700 mb-7 text-xs sm:text-sm">
-          <span class="text-slate-400">Best Arcade Score:</span>
-          <strong id="menu-highscore" class="text-amber-400 font-black text-base">0</strong>
+        <!-- Play Mode Toggle (Arcade vs Zen) -->
+        <div class="inline-flex items-center gap-1.5 p-1.5 rounded-2xl bg-slate-950/80 border border-slate-700 mb-2">
+          <button type="button" data-playmode="arcade" class="playmode-btn px-4 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold bg-emerald-500 text-slate-950 transition">
+            🔥 Arcade (3 Hearts &amp; Combo)
+          </button>
+          <button type="button" data-playmode="zen" class="playmode-btn px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white transition">
+            🧭 Zen Practice (No Lives)
+          </button>
         </div>
+      </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-          <button id="btn-start-arcade" type="button" class="group p-5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 text-left shadow-lg shadow-emerald-500/20 transition transform hover:-translate-y-0.5">
-            <div class="flex items-center justify-between mb-2">
-              <span class="px-2.5 py-0.5 rounded-full bg-slate-950/20 text-slate-950 text-xs font-black uppercase">10 Rounds • 3 Hearts</span>
-              <i data-lucide="flame" class="w-6 h-6"></i>
-            </div>
-            <div class="text-xl font-black mb-1">Arcade Rush</div>
-            <p class="text-xs font-semibold text-slate-900/85">Build combos up to 5×, beat your high score, and watch live breakout animations.</p>
-          </button>
-
-          <button id="btn-start-zen" type="button" class="group p-5 rounded-2xl bg-slate-800/90 hover:bg-slate-800 border-2 border-slate-700 hover:border-cyan-400 text-white text-left transition transform hover:-translate-y-0.5">
-            <div class="flex items-center justify-between mb-2">
-              <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-black uppercase">Unlimited • No Lives</span>
-              <i data-lucide="compass" class="w-6 h-6 text-cyan-400"></i>
-            </div>
-            <div class="text-xl font-black mb-1">Zen Practice</div>
-            <p class="text-xs text-slate-300">Relaxed endless training with free trendline overlays and pattern breakdowns.</p>
-          </button>
+      <!-- Section Cards Grid -->
+      <div>
+        <div class="flex items-center justify-between px-1 mb-3">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Select a Learning Section</h3>
+          <span class="text-xs text-slate-400">Best Overall Score: <strong id="menu-highscore" class="text-amber-400">0</strong></span>
+        </div>
+        <div id="sections-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated by JS -->
         </div>
       </div>
     </section>
@@ -129,8 +125,8 @@
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div class="arcade-card rounded-2xl p-3.5 flex items-center justify-between">
           <div>
-            <div class="text-[11px] font-bold text-slate-400 uppercase">Round</div>
-            <div class="text-xl font-black text-white" id="hud-round">1 / 10</div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase" id="hud-section-label">Section</div>
+            <div class="text-lg sm:text-xl font-black text-white" id="hud-round">1 / 6</div>
           </div>
           <i data-lucide="layers" class="w-5 h-5 text-cyan-400"></i>
         </div>
@@ -163,7 +159,7 @@
       <!-- Live Candlestick Chart Stage -->
       <div class="arcade-card rounded-3xl p-4 sm:p-5">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-          <div class="flex items-center gap-2.5">
+          <div class="flex items-center gap-2 flex-wrap">
             <span id="chart-ticker" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-xs font-black text-cyan-300 tracking-wider">FINLY • 1D</span>
             <span id="chart-qtype" class="px-2.5 py-1 rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-xs font-bold text-indigo-300">Spot the Pattern</span>
           </div>
@@ -199,7 +195,7 @@
           </div>
           <p id="reveal-desc" class="text-xs sm:text-sm text-slate-200 leading-relaxed mb-3"></p>
           <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-700/80 text-xs text-cyan-200 mb-4">
-            <strong>Confirmation &amp; Trap Check:</strong> <span id="reveal-rule"></span>
+            <strong>Confirmation &amp; Study Note:</strong> <span id="reveal-rule"></span>
           </div>
           <button id="btn-next-round" type="button" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-sm sm:text-base transition flex items-center justify-center gap-2">
             <span id="next-round-label">Next Chart</span>
@@ -210,19 +206,19 @@
 
     </section>
 
-    <!-- SCREEN 3: GAME OVER / VICTORY -->
+    <!-- SCREEN 3: SECTION COMPLETE / VICTORY -->
     <section id="screen-end" class="hidden animate-pop">
       <div class="arcade-card rounded-3xl p-6 sm:p-10 text-center max-w-2xl mx-auto">
         <div id="end-icon-wrap" class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950 shadow-lg mb-4">
           <i data-lucide="trophy" class="w-8 h-8"></i>
         </div>
-        <div class="text-xs font-extrabold uppercase tracking-wider text-emerald-400 mb-1" id="end-subtitle">Arcade Complete!</div>
+        <div class="text-xs font-extrabold uppercase tracking-wider text-emerald-400 mb-1" id="end-subtitle">Section Complete!</div>
         <h2 class="text-3xl sm:text-4xl font-black text-white mb-2" id="end-title">Master Pattern Hunter</h2>
-        <p class="text-slate-300 text-sm sm:text-base mb-6" id="end-msg">Sharp eyes! You read price action like a pro.</p>
+        <p class="text-slate-300 text-sm sm:text-base mb-6" id="end-msg">Sharp eyes! You read price action like a seasoned market student.</p>
 
         <div class="grid grid-cols-3 gap-3 mb-6">
           <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-700">
-            <div class="text-xs text-slate-400 font-semibold">Final Score</div>
+            <div class="text-xs text-slate-400 font-semibold">Section Score</div>
             <div class="text-2xl font-black text-emerald-400 mt-1" id="end-score">0</div>
           </div>
           <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-700">
@@ -237,10 +233,13 @@
 
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
           <button id="btn-play-again" type="button" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm sm:text-base transition">
-            Play Arcade Again
+            Replay This Section
           </button>
-          <button id="btn-open-guide-end" type="button" class="px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-sm sm:text-base transition">
-            Study Pattern Field Guide
+          <button id="btn-choose-section" type="button" class="px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-sm sm:text-base transition">
+            Choose Another Section
+          </button>
+          <button id="btn-open-guide-end" type="button" class="px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 font-bold text-sm sm:text-base transition">
+            Field Guide
           </button>
         </div>
       </div>
@@ -248,13 +247,13 @@
 
   </main>
 
-  <!-- PATTERN FIELD GUIDE MODAL (LIST + CLICKABLE FULL-SIZE INSPECTOR) -->
+  <!-- PATTERN FIELD GUIDE MODAL (SECTION-WISE + CLICKABLE FULL-SIZE INSPECTOR) -->
   <div id="modal-guide" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
     <div class="bg-slate-900 rounded-3xl max-w-5xl w-full max-h-[92vh] overflow-y-auto border border-slate-700 shadow-2xl p-5 sm:p-6 animate-pop">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
         <div class="flex items-center gap-2">
           <i data-lucide="book-open" class="w-5 h-5 text-cyan-400"></i>
-          <h3 class="font-black text-lg text-white" id="guide-modal-title">Chart Pattern Field Guide (20 Classics)</h3>
+          <h3 class="font-black text-lg text-white">Chart Pattern Field Guide (26 Classics)</h3>
         </div>
         <button id="btn-close-guide" type="button" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -263,18 +262,19 @@
 
       <!-- LIST VIEW -->
       <div id="guide-list-view">
-        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-          <div class="flex flex-wrap gap-2">
-            <button type="button" data-filter="all" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950">All (20)</button>
-            <button type="button" data-filter="Bullish" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-emerald-300 hover:bg-slate-700">Bullish</button>
-            <button type="button" data-filter="Bearish" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-rose-300 hover:bg-slate-700">Bearish</button>
-            <button type="button" data-filter="Bilateral" class="guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-amber-300 hover:bg-slate-700">Bilateral</button>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" data-sec="all" class="guide-sec-tab px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950">All Sections (26)</button>
+            <button type="button" data-sec="reversals" class="guide-sec-tab px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">1. Reversals</button>
+            <button type="button" data-sec="continuations" class="guide-sec-tab px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">2. Flags &amp; Boxes</button>
+            <button type="button" data-sec="triangles" class="guide-sec-tab px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">3. Triangles &amp; Wedges</button>
+            <button type="button" data-sec="advanced" class="guide-sec-tab px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">4. Rare &amp; Advanced</button>
           </div>
-          <span class="text-xs text-slate-400">For educational study only &bull; Click any pattern card to inspect</span>
+          <span class="text-xs text-slate-400">For educational study only &bull; Click any card to inspect</span>
         </div>
 
         <div id="guide-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Populated by JS with large clickable cards -->
+          <!-- Populated by JS -->
         </div>
       </div>
 
@@ -283,7 +283,7 @@
         <div class="flex flex-wrap items-center justify-between gap-2">
           <button id="btn-guide-back" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 transition">
             <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-            <span>All Patterns</span>
+            <span>Back to List</span>
           </button>
           <div class="flex items-center gap-2">
             <button id="btn-guide-prev" type="button" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700">← Prev</button>
@@ -319,7 +319,7 @@
             <p id="detail-desc" class="text-sm text-slate-200 leading-relaxed"></p>
           </div>
           <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700">
-            <div class="text-xs font-extrabold uppercase tracking-wider text-cyan-400 mb-1">Confirmation &amp; Common Trap</div>
+            <div class="text-xs font-extrabold uppercase tracking-wider text-cyan-400 mb-1">Confirmation &amp; Study Note</div>
             <p class="text-sm text-white font-semibold mb-1" id="detail-trigger"></p>
             <p id="detail-rule" class="text-xs text-slate-300 leading-relaxed"></p>
           </div>
@@ -328,6 +328,11 @@
 
     </div>
   </div>
+
+  <footer class="max-w-5xl mx-auto px-4 pb-6 pt-2 text-center text-xs text-slate-500">
+    <p>&copy; 2026 <strong class="text-slate-300">So-Called Investor (SCI)</strong>. All rights reserved. &bull; ChartBlaster by SCI</p>
+    <p class="mt-1 text-[11px] text-slate-400">Educational &amp; knowledge purpose only. Simulated charts are not financial advice, buy/sell tips, or F&amp;O recommendations.</p>
+  </footer>
 
   <script>
     // ---------- AUDIO ENGINE ----------
@@ -373,317 +378,267 @@
       } catch (e) {}
     }
 
-    // ---------- GROUNDED 20 CHART PATTERNS ----------
+    // ---------- SECTIONS & 26 GROUNDED CHART PATTERNS ----------
+    const SECTIONS = [
+      {
+        id: 'reversals',
+        title: 'Section 1: Classic Reversals',
+        badge: 'Foundation • 6 Patterns',
+        color: 'emerald',
+        icon: 'refresh-cw',
+        desc: 'Master Head & Shoulders, Double Tops/Bottoms, and Triple Tops/Bottoms—how trends signal exhaustion.'
+      },
+      {
+        id: 'continuations',
+        title: 'Section 2: Flags, Pennants & Boxes',
+        badge: 'Momentum • 8 Patterns',
+        color: 'cyan',
+        icon: 'flag',
+        desc: 'Learn Bull/Bear Flags, Pennants, Rectangles, and Cup & Handle formations where trends pause before resuming.'
+      },
+      {
+        id: 'triangles',
+        title: 'Section 3: Triangles & Wedges',
+        badge: 'Geometry • 6 Patterns',
+        color: 'indigo',
+        icon: 'triangle',
+        desc: 'Spot Ascending, Descending, and Symmetrical Triangles plus Rising, Falling, and Broadening Wedges.'
+      },
+      {
+        id: 'advanced',
+        title: 'Section 4: Rare & Advanced',
+        badge: 'Pro Study • 6 Patterns',
+        color: 'amber',
+        icon: 'gem',
+        desc: 'Explore Diamond Tops/Bottoms, Bump & Run Reversals, Rounding Bottoms, and Island Reversals.'
+      },
+      {
+        id: 'boss',
+        title: 'Boss Mix: All 26 Patterns',
+        badge: 'Full Challenge • 12 Rounds',
+        color: 'rose',
+        icon: 'flame',
+        desc: 'Test everything you learned across all 4 sections in a randomized 12-round mastery run!'
+      }
+    ];
+
     const TICKERS = ['FINLY', 'SOLAR', 'CHIPZ', 'VOLT', 'CLOUD', 'AERO', 'NEXUS', 'BIOX', 'QUANT', 'APEX'];
 
     const PATTERNS = [
+      // SECTION 1: REVERSALS
       {
-        id: 'hs',
-        name: 'Head & Shoulders',
-        category: 'Reversal',
-        bias: 'Bearish',
-        biasFull: 'Bearish Reversal',
+        id: 'hs', section: 'reversals', name: 'Head & Shoulders', category: 'Reversal', bias: 'Bearish', biasFull: 'Bearish Reversal',
         trigger: 'Price closes below the neckline',
         desc: 'Three peaks after an uptrend: left shoulder, higher head, and lower right shoulder. Shows buyers losing momentum.',
         rule: 'Wait for a confirmed break and close below the neckline—guessing before the break often leads to false signals.',
-        points: [25, 45, 65, 48, 62, 86, 48, 63, 47],
-        breakout: [40, 32, 26, 20, 15],
+        points: [25, 45, 65, 48, 62, 86, 48, 63, 47], breakout: [40, 32, 26, 20, 15],
         lines: [{ x1: 0.28, y1: 48, x2: 0.92, y2: 47, label: 'Neckline' }]
       },
       {
-        id: 'ihs',
-        name: 'Inverse Head & Shoulders',
-        category: 'Reversal',
-        bias: 'Bullish',
-        biasFull: 'Bullish Reversal',
+        id: 'ihs', section: 'reversals', name: 'Inverse Head & Shoulders', category: 'Reversal', bias: 'Bullish', biasFull: 'Bullish Reversal',
         trigger: 'Price closes above the neckline',
         desc: 'Three troughs after a downtrend: left shoulder, deeper head, and higher right shoulder. Signals sellers running out of steam.',
         rule: 'Confirmation arrives when price breaks and closes above the neckline connecting the two middle peaks.',
-        points: [78, 56, 36, 54, 38, 16, 54, 39, 55],
-        breakout: [62, 70, 77, 83, 89],
+        points: [78, 56, 36, 54, 38, 16, 54, 39, 55], breakout: [62, 70, 77, 83, 89],
         lines: [{ x1: 0.28, y1: 54, x2: 0.92, y2: 55, label: 'Neckline' }]
       },
       {
-        id: 'dtop',
-        name: 'Double Top',
-        category: 'Reversal',
-        bias: 'Bearish',
-        biasFull: 'Bearish Reversal',
+        id: 'dtop', section: 'reversals', name: 'Double Top', category: 'Reversal', bias: 'Bearish', biasFull: 'Bearish Reversal',
         trigger: 'Price breaks below the middle valley support',
         desc: 'An M-shaped formation where price tests a resistance ceiling twice and fails both times.',
         rule: 'Do not assume a reversal just on the second peak—watch to see if price breaks below the support valley between the two tops.',
-        points: [28, 52, 78, 54, 48, 76, 56, 47],
-        breakout: [38, 30, 24, 18, 13],
-        lines: [
-          { x1: 0.2, y1: 77, x2: 0.78, y2: 77, label: 'Resistance' },
-          { x1: 0.38, y1: 48, x2: 0.92, y2: 48, label: 'Support' }
-        ]
+        points: [28, 52, 78, 54, 48, 76, 56, 47], breakout: [38, 30, 24, 18, 13],
+        lines: [{ x1: 0.2, y1: 77, x2: 0.78, y2: 77, label: 'Resistance' }, { x1: 0.38, y1: 48, x2: 0.92, y2: 48, label: 'Support' }]
       },
       {
-        id: 'dbot',
-        name: 'Double Bottom',
-        category: 'Reversal',
-        bias: 'Bullish',
-        biasFull: 'Bullish Reversal',
+        id: 'dbot', section: 'reversals', name: 'Double Bottom', category: 'Reversal', bias: 'Bullish', biasFull: 'Bullish Reversal',
         trigger: 'Price closes above the middle peak',
         desc: 'A W-shaped formation where sellers fail twice to push price below a strong support floor.',
         rule: 'The pattern is only confirmed when price closes above the middle peak between the two lows.',
-        points: [75, 50, 24, 46, 54, 25, 45, 55],
-        breakout: [63, 71, 78, 84, 90],
-        lines: [
-          { x1: 0.2, y1: 24, x2: 0.78, y2: 24, label: 'Support' },
-          { x1: 0.38, y1: 54, x2: 0.92, y2: 54, label: 'Neckline' }
-        ]
+        points: [75, 50, 24, 46, 54, 25, 45, 55], breakout: [63, 71, 78, 84, 90],
+        lines: [{ x1: 0.2, y1: 24, x2: 0.78, y2: 24, label: 'Support' }, { x1: 0.38, y1: 54, x2: 0.92, y2: 54, label: 'Neckline' }]
       },
       {
-        id: 'ttop',
-        name: 'Triple Top',
-        category: 'Reversal',
-        bias: 'Bearish',
-        biasFull: 'Bearish Reversal',
+        id: 'ttop', section: 'reversals', name: 'Triple Top', category: 'Reversal', bias: 'Bearish', biasFull: 'Bearish Reversal',
         trigger: 'Price closes below the support neckline after 3 peaks',
         desc: 'Price tests the same resistance ceiling three times after an uptrend and fails to break through.',
         rule: 'Takes longer to form than a Double Top; confirmation only arrives on a close below support.',
-        points: [24, 54, 78, 50, 77, 49, 78, 50],
-        breakout: [41, 32, 24, 17, 11],
-        lines: [
-          { x1: 0.2, y1: 78, x2: 0.85, y2: 78, label: 'Resistance' },
-          { x1: 0.35, y1: 49, x2: 0.94, y2: 49, label: 'Neckline' }
-        ]
+        points: [24, 54, 78, 50, 77, 49, 78, 50], breakout: [41, 32, 24, 17, 11],
+        lines: [{ x1: 0.2, y1: 78, x2: 0.85, y2: 78, label: 'Resistance' }, { x1: 0.35, y1: 49, x2: 0.94, y2: 49, label: 'Neckline' }]
       },
       {
-        id: 'tbot',
-        name: 'Triple Bottom',
-        category: 'Reversal',
-        bias: 'Bullish',
-        biasFull: 'Bullish Reversal',
+        id: 'tbot', section: 'reversals', name: 'Triple Bottom', category: 'Reversal', bias: 'Bullish', biasFull: 'Bullish Reversal',
         trigger: 'Price closes above the resistance neckline after 3 lows',
         desc: 'Price bounces off the same support floor three times after a downtrend, showing buyers absorbing all supply.',
         rule: 'Wait for a decisive close above the resistance neckline separating the three troughs.',
-        points: [78, 48, 22, 50, 23, 51, 22, 50],
-        breakout: [59, 68, 76, 84, 91],
-        lines: [
-          { x1: 0.2, y1: 22, x2: 0.85, y2: 22, label: 'Support' },
-          { x1: 0.35, y1: 50, x2: 0.94, y2: 50, label: 'Neckline' }
-        ]
+        points: [78, 48, 22, 50, 23, 51, 22, 50], breakout: [59, 68, 76, 84, 91],
+        lines: [{ x1: 0.2, y1: 22, x2: 0.85, y2: 22, label: 'Support' }, { x1: 0.35, y1: 50, x2: 0.94, y2: 50, label: 'Neckline' }]
       },
+
+      // SECTION 2: CONTINUATIONS (FLAGS, PENNANTS, BOXES, CUPS)
       {
-        id: 'asc_tri',
-        name: 'Ascending Triangle',
-        category: 'Continuation',
-        bias: 'Bullish',
-        biasFull: 'Bullish Continuation',
-        trigger: 'Price closes above the flat top resistance',
-        desc: 'Flat resistance on top with rising higher lows below—buyers are stepping in more aggressively on every dip.',
-        rule: 'Wait for a clean candle close above the flat resistance ceiling before expecting the next leg up.',
-        points: [22, 46, 72, 40, 73, 52, 72, 62, 73],
-        breakout: [80, 86, 91, 95, 97],
-        lines: [
-          { x1: 0.22, y1: 73, x2: 0.92, y2: 73, label: 'Flat Resistance' },
-          { x1: 0.32, y1: 38, x2: 0.92, y2: 65, label: 'Rising Lows' }
-        ]
-      },
-      {
-        id: 'desc_tri',
-        name: 'Descending Triangle',
-        category: 'Continuation',
-        bias: 'Bearish',
-        biasFull: 'Bearish Continuation',
-        trigger: 'Price closes below the flat bottom support',
-        desc: 'Flat support floor below with falling lower highs above—sellers are pressing down harder after each bounce.',
-        rule: 'Breakdown is confirmed once price closes decisively below the flat support floor.',
-        points: [80, 56, 28, 60, 27, 48, 28, 38, 27],
-        breakout: [20, 14, 10, 7, 5],
-        lines: [
-          { x1: 0.22, y1: 27, x2: 0.92, y2: 27, label: 'Flat Support' },
-          { x1: 0.32, y1: 62, x2: 0.92, y2: 35, label: 'Falling Highs' }
-        ]
-      },
-      {
-        id: 'sym_tri',
-        name: 'Symmetrical Triangle',
-        category: 'Bilateral',
-        bias: 'Bilateral',
-        biasFull: 'Bilateral Consolidation',
-        trigger: 'Wait for a breakout above upper OR below lower trendline',
-        desc: 'Lower highs and higher lows converging into a tight coil. Volatility is compressing before a big move.',
-        rule: 'Because it is bilateral, it can break either way! Never guess early—wait for the breakout candle.',
-        points: [32, 72, 36, 64, 42, 58, 47, 54, 50],
-        breakout: [60, 68, 75, 81, 86],
-        lines: [
-          { x1: 0.14, y1: 74, x2: 0.92, y2: 52, label: 'Upper Trend' },
-          { x1: 0.14, y1: 32, x2: 0.92, y2: 49, label: 'Lower Trend' }
-        ]
-      },
-      {
-        id: 'bull_flag',
-        name: 'Bull Flag',
-        category: 'Continuation',
-        bias: 'Bullish',
-        biasFull: 'Bullish Continuation',
+        id: 'bull_flag', section: 'continuations', name: 'Bull Flag', category: 'Continuation', bias: 'Bullish', biasFull: 'Bullish Continuation',
         trigger: 'Price closes above the flag’s upper channel line',
         desc: 'A sharp rally (flagpole) followed by a gentle, downward-sloping pause channel (flag) on light profit-taking.',
         rule: 'Watch for price to break out above the upper parallel flag line to resume the uptrend.',
-        points: [16, 36, 60, 78, 70, 74, 65, 69, 61, 66],
-        breakout: [75, 83, 89, 93, 96],
-        lines: [
-          { x1: 0.38, y1: 77, x2: 0.92, y2: 66, label: 'Upper Flag' },
-          { x1: 0.42, y1: 69, x2: 0.92, y2: 58, label: 'Lower Flag' }
-        ]
+        points: [16, 36, 60, 78, 70, 74, 65, 69, 61, 66], breakout: [75, 83, 89, 93, 96],
+        lines: [{ x1: 0.38, y1: 77, x2: 0.92, y2: 66, label: 'Upper Flag' }, { x1: 0.42, y1: 69, x2: 0.92, y2: 58, label: 'Lower Flag' }]
       },
       {
-        id: 'bear_flag',
-        name: 'Bear Flag',
-        category: 'Continuation',
-        bias: 'Bearish',
-        biasFull: 'Bearish Continuation',
+        id: 'bear_flag', section: 'continuations', name: 'Bear Flag', category: 'Continuation', bias: 'Bearish', biasFull: 'Bearish Continuation',
         trigger: 'Price closes below the flag’s lower channel line',
         desc: 'A sharp drop (flagpole) followed by a weak, upward-sloping bounce channel (flag) before sellers take over again.',
         rule: 'Breakdown triggers when price closes below the lower parallel trendline of the bounce channel.',
-        points: [86, 65, 42, 22, 30, 26, 35, 31, 40, 35],
-        breakout: [26, 18, 12, 8, 5],
-        lines: [
-          { x1: 0.38, y1: 23, x2: 0.92, y2: 34, label: 'Lower Flag' },
-          { x1: 0.42, y1: 31, x2: 0.92, y2: 42, label: 'Upper Flag' }
-        ]
+        points: [86, 65, 42, 22, 30, 26, 35, 31, 40, 35], breakout: [26, 18, 12, 8, 5],
+        lines: [{ x1: 0.38, y1: 23, x2: 0.92, y2: 34, label: 'Lower Flag' }, { x1: 0.42, y1: 31, x2: 0.92, y2: 42, label: 'Upper Flag' }]
       },
       {
-        id: 'bull_pen',
-        name: 'Bullish Pennant',
-        category: 'Continuation',
-        bias: 'Bullish',
-        biasFull: 'Bullish Continuation',
+        id: 'bull_pen', section: 'continuations', name: 'Bullish Pennant', category: 'Continuation', bias: 'Bullish', biasFull: 'Bullish Continuation',
         trigger: 'Price breaks above the compact pennant’s upper line',
         desc: 'A fast rally pole followed by a small, tight converging triangle (pennant) as buyers catch their breath.',
         rule: 'Breakout above the upper converging line usually resumes the sharp prior uptrend.',
-        points: [14, 38, 62, 80, 66, 76, 69, 74, 71],
-        breakout: [80, 86, 91, 95, 97],
-        lines: [
-          { x1: 0.4, y1: 80, x2: 0.92, y2: 72, label: 'Upper Pennant' },
-          { x1: 0.44, y1: 65, x2: 0.92, y2: 71, label: 'Lower Pennant' }
-        ]
+        points: [14, 38, 62, 80, 66, 76, 69, 74, 71], breakout: [80, 86, 91, 95, 97],
+        lines: [{ x1: 0.4, y1: 80, x2: 0.92, y2: 72, label: 'Upper Pennant' }, { x1: 0.44, y1: 65, x2: 0.92, y2: 71, label: 'Lower Pennant' }]
       },
       {
-        id: 'bear_pen',
-        name: 'Bearish Pennant',
-        category: 'Continuation',
-        bias: 'Bearish',
-        biasFull: 'Bearish Continuation',
+        id: 'bear_pen', section: 'continuations', name: 'Bearish Pennant', category: 'Continuation', bias: 'Bearish', biasFull: 'Bearish Continuation',
         trigger: 'Price breaks below the compact pennant’s lower line',
         desc: 'A steep drop pole followed by a tight converging pause before sellers resume pushing prices down.',
         rule: 'Wait for a candle close below the lower converging pennant line.',
-        points: [88, 64, 40, 20, 34, 24, 31, 26, 29],
-        breakout: [20, 14, 10, 7, 4],
-        lines: [
-          { x1: 0.4, y1: 20, x2: 0.92, y2: 28, label: 'Lower Pennant' },
-          { x1: 0.44, y1: 35, x2: 0.92, y2: 29, label: 'Upper Pennant' }
-        ]
+        points: [88, 64, 40, 20, 34, 24, 31, 26, 29], breakout: [20, 14, 10, 7, 4],
+        lines: [{ x1: 0.4, y1: 20, x2: 0.92, y2: 28, label: 'Lower Pennant' }, { x1: 0.44, y1: 35, x2: 0.92, y2: 29, label: 'Upper Pennant' }]
       },
       {
-        id: 'bull_rect',
-        name: 'Bullish Rectangle',
-        category: 'Continuation',
-        bias: 'Bullish',
-        biasFull: 'Bullish Continuation',
+        id: 'bull_rect', section: 'continuations', name: 'Bullish Rectangle', category: 'Continuation', bias: 'Bullish', biasFull: 'Bullish Continuation',
         trigger: 'Price closes above the horizontal resistance box',
         desc: 'After an uptrend, price pauses sideways between two parallel horizontal support and resistance levels.',
         rule: 'Sideways ranges can fool impatient chart readers—wait for a confirmed breakout close above the top of the box.',
-        points: [20, 44, 70, 52, 71, 53, 70, 52, 71],
-        breakout: [79, 85, 90, 94, 97],
-        lines: [
-          { x1: 0.24, y1: 71, x2: 0.92, y2: 71, label: 'Resistance' },
-          { x1: 0.28, y1: 52, x2: 0.92, y2: 52, label: 'Support' }
-        ]
+        points: [20, 44, 70, 52, 71, 53, 70, 52, 71], breakout: [79, 85, 90, 94, 97],
+        lines: [{ x1: 0.24, y1: 71, x2: 0.92, y2: 71, label: 'Resistance' }, { x1: 0.28, y1: 52, x2: 0.92, y2: 52, label: 'Support' }]
       },
       {
-        id: 'bear_rect',
-        name: 'Bearish Rectangle',
-        category: 'Continuation',
-        bias: 'Bearish',
-        biasFull: 'Bearish Continuation',
+        id: 'bear_rect', section: 'continuations', name: 'Bearish Rectangle', category: 'Continuation', bias: 'Bearish', biasFull: 'Bearish Continuation',
         trigger: 'Price closes below the horizontal support box',
         desc: 'After a downtrend, price pauses sideways in a horizontal box before breaking lower.',
         rule: 'Confirmation comes on a decisive close below the bottom horizontal support line.',
-        points: [84, 58, 30, 48, 29, 47, 30, 48, 29],
-        breakout: [21, 15, 10, 7, 4],
-        lines: [
-          { x1: 0.24, y1: 48, x2: 0.92, y2: 48, label: 'Resistance' },
-          { x1: 0.24, y1: 29, x2: 0.92, y2: 29, label: 'Support' }
-        ]
+        points: [84, 58, 30, 48, 29, 47, 30, 48, 29], breakout: [21, 15, 10, 7, 4],
+        lines: [{ x1: 0.24, y1: 48, x2: 0.92, y2: 48, label: 'Resistance' }, { x1: 0.24, y1: 29, x2: 0.92, y2: 29, label: 'Support' }]
       },
       {
-        id: 'cup',
-        name: 'Cup & Handle',
-        category: 'Continuation',
-        bias: 'Bullish',
-        biasFull: 'Bullish Continuation',
+        id: 'cup', section: 'continuations', name: 'Cup & Handle', category: 'Continuation', bias: 'Bullish', biasFull: 'Bullish Continuation',
         trigger: 'Price breaks above the handle / rim resistance',
         desc: 'A smooth U-shaped rounded bottom (the cup) followed by a shallow pullback (the handle) near the prior high.',
         rule: 'Avoid V-shaped spikes; a rounded base + tight handle breakout above the rim is the classic confirmation.',
-        points: [74, 52, 34, 24, 22, 26, 38, 56, 73, 64, 68],
-        breakout: [78, 85, 90, 94, 97],
+        points: [74, 52, 34, 24, 22, 26, 38, 56, 73, 64, 68], breakout: [78, 85, 90, 94, 97],
         lines: [{ x1: 0.1, y1: 74, x2: 0.94, y2: 74, label: 'Rim Resistance' }]
       },
       {
-        id: 'round_bot',
-        name: 'Rounding Bottom (Saucer)',
-        category: 'Reversal',
-        bias: 'Bullish',
-        biasFull: 'Bullish Reversal',
-        trigger: 'Price breaks above the prior high rim of the saucer',
-        desc: 'A slow, U-shaped curve after a prolonged downtrend showing selling pressure fading and buyers steadily accumulating.',
-        rule: 'Patience is key—look for rising volume as the right side of the U-shape climbs toward the breakout rim.',
-        points: [76, 56, 40, 28, 22, 20, 22, 29, 43, 60, 75],
-        breakout: [82, 87, 91, 94, 97],
-        lines: [{ x1: 0.08, y1: 76, x2: 0.94, y2: 76, label: 'Breakout Rim' }]
+        id: 'inv_cup', section: 'continuations', name: 'Inverted Cup & Handle', category: 'Continuation', bias: 'Bearish', biasFull: 'Bearish Continuation',
+        trigger: 'Price breaks below the inverted handle neckline',
+        desc: 'An upside-down U-shaped dome followed by a small upward bounce (handle) before sellers push lower.',
+        rule: 'Confirmation arrives when price breaks decisively below the horizontal neckline framing the handle.',
+        points: [26, 48, 66, 76, 78, 74, 62, 44, 27, 36, 32], breakout: [22, 15, 10, 6, 3],
+        lines: [{ x1: 0.1, y1: 26, x2: 0.94, y2: 26, label: 'Neckline Support' }]
+      },
+
+      // SECTION 3: TRIANGLES & WEDGES
+      {
+        id: 'asc_tri', section: 'triangles', name: 'Ascending Triangle', category: 'Continuation', bias: 'Bullish', biasFull: 'Bullish Continuation',
+        trigger: 'Price closes above the flat top resistance',
+        desc: 'Flat resistance on top with rising higher lows below—buyers are stepping in more aggressively on every dip.',
+        rule: 'Wait for a clean candle close above the flat resistance ceiling before expecting the next leg up.',
+        points: [22, 46, 72, 40, 73, 52, 72, 62, 73], breakout: [80, 86, 91, 95, 97],
+        lines: [{ x1: 0.22, y1: 73, x2: 0.92, y2: 73, label: 'Flat Resistance' }, { x1: 0.32, y1: 38, x2: 0.92, y2: 65, label: 'Rising Lows' }]
       },
       {
-        id: 'rise_wedge',
-        name: 'Rising Wedge',
-        category: 'Reversal',
-        bias: 'Bearish',
-        biasFull: 'Bearish Reversal',
+        id: 'desc_tri', section: 'triangles', name: 'Descending Triangle', category: 'Continuation', bias: 'Bearish', biasFull: 'Bearish Continuation',
+        trigger: 'Price closes below the flat bottom support',
+        desc: 'Flat support floor below with falling lower highs above—sellers are pressing down harder after each bounce.',
+        rule: 'Breakdown is confirmed once price closes decisively below the flat support floor.',
+        points: [80, 56, 28, 60, 27, 48, 28, 38, 27], breakout: [20, 14, 10, 7, 5],
+        lines: [{ x1: 0.22, y1: 27, x2: 0.92, y2: 27, label: 'Flat Support' }, { x1: 0.32, y1: 62, x2: 0.92, y2: 35, label: 'Falling Highs' }]
+      },
+      {
+        id: 'sym_tri', section: 'triangles', name: 'Symmetrical Triangle', category: 'Bilateral', bias: 'Bilateral', biasFull: 'Bilateral Consolidation',
+        trigger: 'Wait for a breakout above upper OR below lower trendline',
+        desc: 'Lower highs and higher lows converging into a tight coil. Volatility is compressing before a big move.',
+        rule: 'Because it is bilateral, it can break either way! Never guess early—wait for the breakout candle.',
+        points: [32, 72, 36, 64, 42, 58, 47, 54, 50], breakout: [60, 68, 75, 81, 86],
+        lines: [{ x1: 0.14, y1: 74, x2: 0.92, y2: 52, label: 'Upper Trend' }, { x1: 0.14, y1: 32, x2: 0.92, y2: 49, label: 'Lower Trend' }]
+      },
+      {
+        id: 'rise_wedge', section: 'triangles', name: 'Rising Wedge', category: 'Reversal', bias: 'Bearish', biasFull: 'Bearish Reversal',
         trigger: 'Price breaks below the lower upward-sloping trendline',
         desc: 'Price edges higher inside two converging upward-sloping lines, showing buyers struggling to sustain momentum.',
         rule: 'Even though price is creeping up, narrowing upward wedges frequently break downward below the lower line.',
-        points: [24, 48, 35, 62, 50, 74, 63, 81, 73],
-        breakout: [62, 50, 39, 29, 20],
-        lines: [
-          { x1: 0.16, y1: 48, x2: 0.9, y2: 83, label: 'Upper Wedge' },
-          { x1: 0.24, y1: 32, x2: 0.9, y2: 72, label: 'Lower Wedge' }
-        ]
+        points: [24, 48, 35, 62, 50, 74, 63, 81, 73], breakout: [62, 50, 39, 29, 20],
+        lines: [{ x1: 0.16, y1: 48, x2: 0.9, y2: 83, label: 'Upper Wedge' }, { x1: 0.24, y1: 32, x2: 0.9, y2: 72, label: 'Lower Wedge' }]
       },
       {
-        id: 'fall_wedge',
-        name: 'Falling Wedge',
-        category: 'Reversal',
-        bias: 'Bullish',
-        biasFull: 'Bullish Reversal',
+        id: 'fall_wedge', section: 'triangles', name: 'Falling Wedge', category: 'Reversal', bias: 'Bullish', biasFull: 'Bullish Reversal',
         trigger: 'Price breaks above the upper downward-sloping trendline',
         desc: 'Price drifts lower inside two converging downward-sloping lines as selling pressure steadily dries up.',
         rule: 'Confirmation happens when buyers push price decisively above the upper downward trendline.',
-        points: [78, 52, 66, 38, 50, 26, 37, 19, 27],
-        breakout: [39, 52, 64, 75, 84],
-        lines: [
-          { x1: 0.16, y1: 68, x2: 0.9, y2: 28, label: 'Upper Wedge' },
-          { x1: 0.24, y1: 50, x2: 0.9, y2: 18, label: 'Lower Wedge' }
-        ]
+        points: [78, 52, 66, 38, 50, 26, 37, 19, 27], breakout: [39, 52, 64, 75, 84],
+        lines: [{ x1: 0.16, y1: 68, x2: 0.9, y2: 28, label: 'Upper Wedge' }, { x1: 0.24, y1: 50, x2: 0.9, y2: 18, label: 'Lower Wedge' }]
       },
       {
-        id: 'broad_wedge',
-        name: 'Broadening Megaphone',
-        category: 'Bilateral',
-        bias: 'Bilateral',
-        biasFull: 'Bilateral Consolidation',
+        id: 'broad_wedge', section: 'triangles', name: 'Broadening Megaphone', category: 'Bilateral', bias: 'Bilateral', biasFull: 'Bilateral Consolidation',
         trigger: 'Price breaks decisively beyond either diverging trendline',
         desc: 'Successive higher highs and lower lows form an expanding megaphone shape, signaling high volatility and market indecision.',
         rule: 'Wide swings inside a megaphone create false signals easily—observe price behavior until a clean breakout occurs outside the diverging lines.',
-        points: [52, 60, 44, 68, 36, 76, 28, 82],
-        breakout: [86, 90, 93, 95, 97],
-        lines: [
-          { x1: 0.12, y1: 58, x2: 0.92, y2: 84, label: 'Expanding Highs' },
-          { x1: 0.12, y1: 46, x2: 0.92, y2: 26, label: 'Expanding Lows' }
-        ]
+        points: [52, 60, 44, 68, 36, 76, 28, 82], breakout: [86, 90, 93, 95, 97],
+        lines: [{ x1: 0.12, y1: 58, x2: 0.92, y2: 84, label: 'Expanding Highs' }, { x1: 0.12, y1: 46, x2: 0.92, y2: 26, label: 'Expanding Lows' }]
+      },
+
+      // SECTION 4: RARE & ADVANCED
+      {
+        id: 'round_bot', section: 'advanced', name: 'Rounding Bottom (Saucer)', category: 'Reversal', bias: 'Bullish', biasFull: 'Bullish Reversal',
+        trigger: 'Price breaks above the prior high rim of the saucer',
+        desc: 'A slow, U-shaped curve after a prolonged downtrend showing selling pressure fading and buyers steadily accumulating.',
+        rule: 'Patience is key—look for rising volume as the right side of the U-shape climbs toward the breakout rim.',
+        points: [76, 56, 40, 28, 22, 20, 22, 29, 43, 60, 75], breakout: [82, 87, 91, 94, 97],
+        lines: [{ x1: 0.08, y1: 76, x2: 0.94, y2: 76, label: 'Breakout Rim' }]
+      },
+      {
+        id: 'dia_top', section: 'advanced', name: 'Diamond Top', category: 'Reversal', bias: 'Bearish', biasFull: 'Bearish Reversal',
+        trigger: 'Price breaks below the lower-right boundary of the diamond',
+        desc: 'After an uptrend, price first broadens (higher highs, lower lows) then contracts into a 4-sided diamond shape.',
+        rule: 'A rare topping formation—confirmation occurs only when price closes below the lower-right contracting support line.',
+        points: [24, 52, 66, 46, 82, 34, 72, 48, 60, 50], breakout: [38, 28, 20, 14, 9],
+        lines: [{ x1: 0.25, y1: 66, x2: 0.55, y2: 83, label: 'Broaden' }, { x1: 0.55, y1: 83, x2: 0.92, y2: 52, label: 'Contract' }]
+      },
+      {
+        id: 'dia_bot', section: 'advanced', name: 'Diamond Bottom', category: 'Reversal', bias: 'Bullish', biasFull: 'Bullish Reversal',
+        trigger: 'Price breaks above the upper-right boundary of the diamond',
+        desc: 'After a downtrend, chaotic swings broaden then tighten into a diamond base before buyers take control.',
+        rule: 'Wait for price to break out above the upper-right contracting resistance line.',
+        points: [78, 48, 34, 54, 18, 66, 28, 52, 40, 50], breakout: [62, 72, 80, 86, 92],
+        lines: [{ x1: 0.25, y1: 34, x2: 0.55, y2: 17, label: 'Broaden' }, { x1: 0.55, y1: 17, x2: 0.92, y2: 48, label: 'Contract' }]
+      },
+      {
+        id: 'barr_top', section: 'advanced', name: 'Bump & Run (Top)', category: 'Reversal', bias: 'Bearish', biasFull: 'Bearish Reversal',
+        trigger: 'Price falls back and closes below the original lead-in trendline',
+        desc: 'Price rises along a steady lead-in trendline, then spikes steeply (the bump) on hype before collapsing through the lead-in line.',
+        rule: 'The break back below the gentle lead-in trendline signals that speculative excess has ended.',
+        points: [18, 26, 33, 40, 58, 80, 88, 72, 54, 46], breakout: [36, 27, 20, 14, 10],
+        lines: [{ x1: 0.08, y1: 18, x2: 0.92, y2: 50, label: 'Lead-In Trendline' }]
+      },
+      {
+        id: 'barr_bot', section: 'advanced', name: 'Bump & Run (Bottom)', category: 'Reversal', bias: 'Bullish', biasFull: 'Bullish Reversal',
+        trigger: 'Price reverses upward and closes above the lead-in resistance line',
+        desc: 'A steady downtrend accelerates into a steep panic drop (bump) before snapping back above the original lead-in line.',
+        rule: 'Confirmation happens when price breaks cleanly above the gentle downward lead-in resistance line.',
+        points: [82, 74, 67, 60, 42, 20, 12, 28, 46, 54], breakout: [64, 73, 80, 86, 91],
+        lines: [{ x1: 0.08, y1: 82, x2: 0.92, y2: 50, label: 'Lead-In Resistance' }]
+      },
+      {
+        id: 'island_top', section: 'advanced', name: 'Island Reversal (Top)', category: 'Reversal', bias: 'Bearish', biasFull: 'Bearish Reversal',
+        trigger: 'Second price gap downward isolates the top cluster',
+        desc: 'After an uptrend, price gaps up, trades in a small isolated cluster ("island"), and then gaps down in the opposite direction.',
+        rule: 'The second gap down leaves buyers stranded at the top and confirms a sharp sentiment shift.',
+        points: [24, 38, 50, 74, 78, 73, 76, 48, 40], breakout: [33, 26, 20, 15, 11],
+        lines: [{ x1: 0.35, y1: 68, x2: 0.72, y2: 68, label: 'Isolated Island' }]
       }
     ];
 
@@ -809,17 +764,21 @@
       }
     }
 
-    // ---------- GAME STATE ----------
+    // ---------- GAME STATE & SECTION RENDERING ----------
+    let selectedPlayMode = 'arcade';
     let game = {
       mode: 'arcade',
+      sectionId: 'reversals',
+      sectionTitle: 'Section 1',
       round: 1,
-      maxRounds: 10,
+      maxRounds: 6,
       score: 0,
       combo: 0,
       bestStreak: 0,
       correctCount: 0,
       lives: 3,
       deck: [],
+      pool: [],
       currentPattern: null,
       currentQuestion: null,
       candleData: null,
@@ -828,12 +787,13 @@
       animFrame: null
     };
 
-    function getHighScore() {
-      try { return Number(localStorage.getItem('chartblaster_hi') || 0); } catch (e) { return 0; }
+    function getHighScore(secId = 'overall') {
+      try { return Number(localStorage.getItem(`chartblaster_sci_hi_${secId}`) || 0); } catch (e) { return 0; }
     }
-    function saveHighScore(val) {
+    function saveHighScore(val, secId) {
       try {
-        if (val > getHighScore()) localStorage.setItem('chartblaster_hi', String(val));
+        if (val > getHighScore(secId)) localStorage.setItem(`chartblaster_sci_hi_${secId}`, String(val));
+        if (val > getHighScore('overall')) localStorage.setItem('chartblaster_sci_hi_overall', String(val));
       } catch (e) {}
     }
 
@@ -846,26 +806,66 @@
       return a;
     }
 
-    function startMode(mode) {
+    function renderSections() {
+      const grid = document.getElementById('sections-grid');
+      grid.innerHTML = SECTIONS.map(sec => {
+        const hi = getHighScore(sec.id);
+        const spanClass = sec.id === 'boss' ? 'md:col-span-2 bg-gradient-to-r from-slate-900 via-slate-900 to-rose-950/50 border-rose-500/40' : '';
+        return `
+          <button type="button" data-start-sec="${sec.id}" class="section-start-btn text-left arcade-card rounded-3xl p-5 hover:border-${sec.color}-400 transition transform hover:-translate-y-0.5 flex flex-col justify-between ${spanClass}">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-${sec.color}-500/20 text-${sec.color}-400 flex items-center justify-center">
+                  <i data-lucide="${sec.icon}" class="w-5 h-5"></i>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-${sec.color}-500/15 text-${sec.color}-300 border border-${sec.color}-500/30">${sec.badge}</span>
+              </div>
+              <h4 class="text-lg font-black text-white mb-1">${sec.title}</h4>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">${sec.desc}</p>
+            </div>
+            <div class="flex items-center justify-between pt-2.5 border-t border-slate-800 text-xs">
+              <span class="text-slate-400">Best Score: <strong class="text-amber-400">${hi.toLocaleString()}</strong></span>
+              <span class="font-extrabold text-${sec.color}-400 flex items-center gap-1">Start Section <i data-lucide="play" class="w-3.5 h-3.5"></i></span>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.section-start-btn').forEach(btn => {
+        btn.addEventListener('click', () => startSection(btn.dataset.startSec));
+      });
+      document.getElementById('menu-highscore').textContent = getHighScore('overall').toLocaleString();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function startSection(sectionId) {
       playSfx('click');
+      const sec = SECTIONS.find(s => s.id === sectionId) || SECTIONS[0];
+      const pool = sectionId === 'boss' ? [...PATTERNS] : PATTERNS.filter(p => p.section === sectionId);
+      const rounds = selectedPlayMode === 'zen' ? 999 : (sectionId === 'boss' ? 12 : pool.length);
+
       game = {
-        mode,
+        mode: selectedPlayMode,
+        sectionId,
+        sectionTitle: sec.title,
         round: 1,
-        maxRounds: mode === 'arcade' ? 10 : 999,
+        maxRounds: rounds,
         score: 0,
         combo: 0,
         bestStreak: 0,
         correctCount: 0,
         lives: 3,
-        deck: shuffle(PATTERNS),
+        pool,
+        deck: shuffle(pool),
         currentPattern: null,
         currentQuestion: null,
         candleData: null,
-        showHint: mode === 'zen',
+        showHint: selectedPlayMode === 'zen',
         answered: false,
         animFrame: null
       };
 
+      document.getElementById('hud-section-label').textContent = sectionId === 'boss' ? 'Boss Mix' : `Sec: ${sectionId}`;
       document.getElementById('screen-start').classList.add('hidden');
       document.getElementById('screen-end').classList.add('hidden');
       document.getElementById('screen-game').classList.remove('hidden');
@@ -890,7 +890,7 @@
         const options = ['Bullish Reversal', 'Bearish Reversal', 'Bullish Continuation', 'Bearish Continuation'];
         if (pattern.biasFull === 'Bilateral Consolidation') options[3] = 'Bilateral Consolidation';
         return {
-          badge: 'Predict the Move',
+          badge: 'Identify Structure',
           prompt: 'What type of signal does this formation typically represent?',
           options: shuffle(options),
           correct: pattern.biasFull
@@ -925,7 +925,7 @@
     }
 
     function loadRound() {
-      if (game.deck.length === 0) game.deck = shuffle(PATTERNS);
+      if (game.deck.length === 0) game.deck = shuffle(game.pool);
       const pattern = game.deck.pop();
       game.currentPattern = pattern;
       game.currentQuestion = buildQuestion(pattern);
@@ -1016,7 +1016,7 @@
       document.getElementById('reveal-rule').textContent = game.currentPattern.rule;
 
       const isLast = game.mode === 'arcade' && (game.round >= game.maxRounds || game.lives <= 0);
-      document.getElementById('next-round-label').textContent = isLast ? 'See Final Score' : 'Next Chart';
+      document.getElementById('next-round-label').textContent = isLast ? 'See Section Score' : 'Next Chart';
 
       updateHUD();
     }
@@ -1054,7 +1054,7 @@
       document.getElementById('screen-game').classList.add('hidden');
       document.getElementById('screen-end').classList.remove('hidden');
 
-      saveHighScore(game.score);
+      saveHighScore(game.score, game.sectionId);
       const acc = Math.round((game.correctCount / Math.max(1, game.round)) * 100);
 
       document.getElementById('end-score').textContent = game.score.toLocaleString();
@@ -1062,27 +1062,27 @@
       document.getElementById('end-streak').textContent = `${game.bestStreak}🔥`;
 
       if (game.lives > 0 && acc >= 70) {
-        document.getElementById('end-subtitle').textContent = 'Arcade Victory!';
-        document.getElementById('end-title').textContent = 'Master Pattern Hunter';
+        document.getElementById('end-subtitle').textContent = `${game.sectionTitle} Cleared!`;
+        document.getElementById('end-title').textContent = 'Section Mastered';
         document.getElementById('end-msg').textContent = 'You spotted chart formations and confirmation levels like a seasoned market student!';
         if (window.confetti) confetti({ particleCount: 95, spread: 75, origin: { y: 0.6 } });
       } else {
-        document.getElementById('end-subtitle').textContent = game.lives === 0 ? 'Out of Hearts!' : 'Run Complete!';
+        document.getElementById('end-subtitle').textContent = game.lives === 0 ? 'Out of Hearts!' : 'Section Complete!';
         document.getElementById('end-title').textContent = 'Keep Practicing!';
-        document.getElementById('end-msg').textContent = 'Check the Pattern Field Guide to sharpen your eye for necklines and triangles.';
+        document.getElementById('end-msg').textContent = 'Open the Field Guide to inspect each pattern in this section and try again.';
       }
       if (window.lucide) lucide.createIcons();
     }
 
-    // ---------- INTERACTIVE FIELD GUIDE (LARGE CARDS + DETAIL INSPECTOR) ----------
+    // ---------- INTERACTIVE FIELD GUIDE (SECTION-WISE + DETAIL INSPECTOR) ----------
     let detailState = { index: 0, showLines: true, candleData: null, animFrame: null };
 
-    function renderGuide(filter = 'all') {
+    function renderGuide(secFilter = 'all') {
       document.getElementById('guide-detail-view').classList.add('hidden');
       document.getElementById('guide-list-view').classList.remove('hidden');
 
       const grid = document.getElementById('guide-grid');
-      const items = filter === 'all' ? PATTERNS : PATTERNS.filter(p => p.bias === filter);
+      const items = secFilter === 'all' ? PATTERNS : PATTERNS.filter(p => p.section === secFilter);
 
       grid.innerHTML = items.map(p => {
         const badgeColor = p.bias === 'Bullish' ? 'bg-emerald-500/20 text-emerald-300' : p.bias === 'Bearish' ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300';
@@ -1172,13 +1172,23 @@
 
     // ---------- EVENT LISTENERS ----------
     window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('menu-highscore').textContent = getHighScore().toLocaleString();
+      renderSections();
       if (window.lucide) lucide.createIcons();
 
-      document.getElementById('btn-start-arcade').addEventListener('click', () => startMode('arcade'));
-      document.getElementById('btn-start-zen').addEventListener('click', () => startMode('zen'));
-      document.getElementById('btn-play-again').addEventListener('click', () => startMode('arcade'));
+      // Play mode toggle
+      document.querySelectorAll('.playmode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          playSfx('click');
+          selectedPlayMode = btn.dataset.playmode;
+          document.querySelectorAll('.playmode-btn').forEach(b => {
+            b.className = b === btn
+              ? 'playmode-btn px-4 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold bg-emerald-500 text-slate-950 transition'
+              : 'playmode-btn px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white transition';
+          });
+        });
+      });
 
+      document.getElementById('btn-play-again').addEventListener('click', () => startSection(game.sectionId));
       document.getElementById('btn-next-round').addEventListener('click', nextRound);
 
       document.getElementById('btn-hint').addEventListener('click', () => {
@@ -1196,9 +1206,10 @@
         document.getElementById('screen-end').classList.add('hidden');
         document.getElementById('screen-start').classList.remove('hidden');
         document.getElementById('btn-home').classList.add('hidden');
-        document.getElementById('menu-highscore').textContent = getHighScore().toLocaleString();
+        renderSections();
       };
       document.getElementById('btn-home').addEventListener('click', goHome);
+      document.getElementById('btn-choose-section').addEventListener('click', goHome);
 
       document.getElementById('btn-sound').addEventListener('click', () => {
         soundMuted = !soundMuted;
@@ -1242,14 +1253,14 @@
         animateInspector(true);
       });
 
-      document.querySelectorAll('.guide-filter').forEach(btn => {
+      document.querySelectorAll('.guide-sec-tab').forEach(btn => {
         btn.addEventListener('click', () => {
-          document.querySelectorAll('.guide-filter').forEach(b => {
+          document.querySelectorAll('.guide-sec-tab').forEach(b => {
             b.className = b === btn
-              ? 'guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950'
-              : 'guide-filter px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700';
+              ? 'guide-sec-tab px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950'
+              : 'guide-sec-tab px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700';
           });
-          renderGuide(btn.dataset.filter);
+          renderGuide(btn.dataset.sec);
         });
       });
 
@@ -1264,10 +1275,5 @@
       });
     });
   </script>
-
-  <footer class="max-w-5xl mx-auto px-4 pb-6 pt-2 text-center text-xs text-slate-500">
-    <p>&copy; 2026 <strong class="text-slate-300">So-Called Investor (SCI)</strong>. All rights reserved. &bull; ChartBlaster by SCI</p>
-    <p class="mt-1 text-[11px] text-slate-400">Educational &amp; knowledge purpose only. Simulated charts are not financial advice.</p>
-  </footer>
 </body>
 </html>
